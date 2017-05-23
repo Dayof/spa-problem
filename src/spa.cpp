@@ -11,6 +11,23 @@
 
 #include "spa.inl"
 
+
+// void spaT()
+// {
+//   freeTeachers();
+//   freeUniversities();
+//   while()
+// }
+
+void insertVertexOnGraph(int entity, int cod, int hab, int posix)
+{
+  ii inner_node = make_pair(cod, hab);
+  iii node = make_pair(inner_node, entity);
+  iiiv node_struc = make_pair(node, vector<int>());
+  GRAPH[posix] = (node_struc);
+  // printf("%d : %d : %d\n", GRAPH[posix].first.second, GRAPH[posix].first.first.first, GRAPH[posix].first.first.second);
+}
+
 /**
  * Main function. Reads and loads basic data, then executes all main
  *  functionalities of the program.
@@ -19,24 +36,51 @@
  */
 int main(){
 
-    char cod[4];
-    string scod;
-    int hab;
+  char cod[4], p1[4], p2[4], p3[4], p4[4], p5[4];
+  string scod, sp1, sp2, sp3, sp4, sp5;
+  int hab, i, icod;
 
-    FILE *pF = fopen("cod_hab.txt", "r");
+  FILE *pF;
 
-    if(pF == NULL) {
-        cout << "Error on open the file." << endl;
-        return -1;
-    }
+  pF = fopen("cod_hab.txt", "r");
 
-    while (fscanf(pF, "(%[^)]):(%d)\n", cod, &hab) != EOF)
-    {
-      scod = cod;
-      printf("(%s):(%d)\n", cod, hab);
-    }
+  if(pF == NULL)
+  {
+    printf("Error on open the file.\n");
+    return -1;
+  }
 
-    fclose(pF);
+  i = 0;
+  while (fscanf(pF, "(%[^)]):(%d)\n", cod, &hab) != EOF)
+  {
+    scod = cod;
+    scod.erase(0,1);
+    icod = stoi(scod);
+    insertVertexOnGraph(S, icod, hab, i);
+    ++i;
+  }
 
-    return 0;
+  fclose(pF);
+
+  pF = fopen("cod-hab_schools.txt", "r");
+
+  if(pF == NULL)
+  {
+    printf("Error on open the file.\n");
+    return -1;
+  }
+
+  i = 0;
+  while (fscanf(pF, "(%[^,], %d): (%[^,], %[^,], %[^,], %[^,], %[^)])\n", cod, &hab, p1, p2, p3, p4, p5) != EOF)
+  {
+    scod = cod;
+    scod.erase(0,1);
+    icod = stoi(scod);
+    insertVertexOnGraph(T, icod, hab, i);
+    ++i;
+  }
+
+  fclose(pF);
+
+  return 0;
 }

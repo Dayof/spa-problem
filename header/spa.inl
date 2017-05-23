@@ -34,6 +34,24 @@ using namespace std;
 
 /* -- Functions to create and populate the base graph -- */
 
+int readFile(string, string);
+
 /* -- Global variables definitions -- */
+
+#define GRAPHSIZE 150
+#define T 1
+#define S 0
+
+#ifdef WINDOWS
+  #define CLEARSCR() system("cls")
+#else
+  #define CLEARSCR() system("clear")
+#endif
+
+#define ii pair<int, int>
+#define iii pair<ii, int>
+#define iiiv pair <iii, vector<int> >
+
+vector<iiiv> GRAPH(GRAPHSIZE);
 
 #endif // HEADERS_INL_INCLUDED
