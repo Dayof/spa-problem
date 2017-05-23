@@ -34,6 +34,7 @@ using namespace std;
 
 /* -- Functions to create and populate the base graph -- */
 
+int convStringToInt(string);
 void insertAdjOnVertex(vector<int>, int);
 vector<int> calcAdj(vector<int>, int);
 vector<vector<int>> findSchoolsPerHab(int);

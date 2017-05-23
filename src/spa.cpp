@@ -74,6 +74,16 @@ void printAllGraph()
   }
 }
 
+int convStringToInt(string word)
+{
+  int iword;
+
+  word.erase(0,1);
+  iword = stoi(word);
+
+  return iword;
+}
+
 /**
  * Main function. Reads and loads basic data, then executes all main
  *  functionalities of the program.
@@ -84,7 +94,7 @@ int main(){
 
   char cod[4], p1[4], p2[4], p3[4], p4[4], p5[4];
   vector<vector<int>> all_t_adj(3);
-  vector<int> t_adj;
+  vector<int> t_adj, s_adj(5);
   string scod, sp1, sp2, sp3, sp4, sp5;
   int hab, i, icod;
 
@@ -105,6 +115,9 @@ int main(){
     scod.erase(0,1);
     icod = stoi(scod);
     insertVertexOnGraph(T, icod-1, hab, i);
+    sp1 = p1; sp2 = p2; sp3 = p3; sp4 = p4; sp5 = p5;
+    s_adj[0] = convStringToInt(sp1); s_adj[1] = convStringToInt(sp2); s_adj[2] = convStringToInt(sp3); s_adj[3] = convStringToInt(sp4); s_adj[4] = convStringToInt(sp5);
+    insertAdjOnVertex(calcAdj(s_adj, T), i);
     ++i;
   }
 
@@ -123,9 +136,7 @@ int main(){
   while (fscanf(pF, "(%[^)]):(%d)\n", cod, &hab) != EOF)
   {
     scod = cod;
-    scod.erase(0,1);
-    icod = stoi(scod);
-    insertVertexOnGraph(S, icod-1, hab, i);
+    insertVertexOnGraph(S, convStringToInt(scod)-1, hab, i);
 
     if(hab==1)
       t_adj = all_t_adj[0];
