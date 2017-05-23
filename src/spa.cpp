@@ -27,7 +27,7 @@ void insertVertexOnGraph(int entity, int cod, int hab, int posix)
   GRAPH[posix] = (node_struc);
 }
 
-vector<vector<int>> findSchoolsPerHab(int hab)
+vector<vector<int>> findSchoolsPerHab()
 {
   vector<vector<int>> all_t_adj(3);
 
@@ -131,7 +131,7 @@ int main(){
     return -1;
   }
 
-  all_t_adj = findSchoolsPerHab(hab);
+  all_t_adj = findSchoolsPerHab();
 
   while (fscanf(pF, "(%[^)]):(%d)\n", cod, &hab) != EOF)
   {

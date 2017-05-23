@@ -37,7 +37,7 @@ using namespace std;
 int convStringToInt(string);
 void insertAdjOnVertex(vector<int>, int);
 vector<int> calcAdj(vector<int>, int);
-vector<vector<int>> findSchoolsPerHab(int);
+vector<vector<int>> findSchoolsPerHab();
 void insertVertexOnGraph(int, int, int, int);
 
 /* -- Global variables definitions -- */
