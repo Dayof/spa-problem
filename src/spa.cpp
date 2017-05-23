@@ -27,15 +27,21 @@ void insertVertexOnGraph(int entity, int cod, int hab, int posix)
   GRAPH[posix] = (node_struc);
 }
 
-vector<int> findSchoolsAdj(int hab)
+vector<vector<int>> findSchoolsPerHab(int hab)
 {
-  vector<int> t_adj;
+  vector<vector<int>> all_t_adj(3);
 
   for(int i=0; i < 100; ++i)
-    if(GRAPH[i].first.first.second == hab)
-      t_adj.push_back(i);
+  {
+    if(GRAPH[i].first.first.second == 1)
+      all_t_adj[0].push_back(i);
+    else if(GRAPH[i].first.first.second == 2)
+      all_t_adj[1].push_back(i);
+    else if(GRAPH[i].first.first.second == 3)
+      all_t_adj[2].push_back(i);
+  }
 
-  return t_adj;
+  return all_t_adj;
 }
 
 vector<int> calcAdj(vector<int> raw_adj, int entity)
@@ -77,6 +83,8 @@ void printAllGraph()
 int main(){
 
   char cod[4], p1[4], p2[4], p3[4], p4[4], p5[4];
+  vector<vector<int>> all_t_adj(3);
+  vector<int> t_adj;
   string scod, sp1, sp2, sp3, sp4, sp5;
   int hab, i, icod;
 
@@ -110,13 +118,23 @@ int main(){
     return -1;
   }
 
+  all_t_adj = findSchoolsPerHab(hab);
+
   while (fscanf(pF, "(%[^)]):(%d)\n", cod, &hab) != EOF)
   {
     scod = cod;
     scod.erase(0,1);
     icod = stoi(scod);
     insertVertexOnGraph(S, icod-1, hab, i);
-    insertAdjOnVertex(calcAdj(findSchoolsAdj(hab), S), i);
+
+    if(hab==1)
+      t_adj = all_t_adj[0];
+    else if(hab==2)
+      t_adj = all_t_adj[1];
+    else if(hab==3)
+      t_adj = all_t_adj[2];
+
+    insertAdjOnVertex(calcAdj(t_adj, S), i);
     ++i;
   }
 

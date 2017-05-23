@@ -36,7 +36,7 @@ using namespace std;
 
 void insertAdjOnVertex(vector<int>, int);
 vector<int> calcAdj(vector<int>, int);
-vector<int> findSchoolsAdj(int);
+vector<vector<int>> findSchoolsPerHab(int);
 void insertVertexOnGraph(int, int, int, int);
 
 /* -- Global variables definitions -- */
