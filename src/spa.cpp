@@ -25,7 +25,47 @@ void insertVertexOnGraph(int entity, int cod, int hab, int posix)
   iii node = make_pair(inner_node, entity);
   iiiv node_struc = make_pair(node, vector<int>());
   GRAPH[posix] = (node_struc);
-  // printf("%d : %d : %d\n", GRAPH[posix].first.second, GRAPH[posix].first.first.first, GRAPH[posix].first.first.second);
+}
+
+vector<int> findSchoolsAdj(int hab)
+{
+  vector<int> t_adj;
+
+  for(int i=0; i < 100; ++i)
+    if(GRAPH[i].first.first.second == hab)
+      t_adj.push_back(i);
+
+  return t_adj;
+}
+
+vector<int> calcAdj(vector<int> raw_adj, int entity)
+{
+  vector<int> final_adj(raw_adj.size());
+
+  for(int i=0; i<raw_adj.size(); ++i)
+  {
+    // 99 = 100 - 1
+    if(entity) final_adj[i] = raw_adj[i] + 99;
+    else final_adj[i] = raw_adj[i] - 1;
+  }
+
+  return final_adj;
+}
+
+void insertAdjOnVertex(vector<int> adj, int v_origin)
+{
+  GRAPH[v_origin].second = adj;
+}
+
+void printAllGraph()
+{
+  for(int i=0; i < GRAPHSIZE; ++i)
+  {
+    printf("Entity : %d | Cod : %d | Hab : %d | Adj : \n", GRAPH[i].first.second, GRAPH[i].first.first.first, GRAPH[i].first.first.second);
+    for(int j=0; j<GRAPH[i].second.size(); ++j)
+      printf("%d -> ", GRAPH[i].second[j]);
+    printf("\n");
+  }
 }
 
 /**
@@ -42,26 +82,6 @@ int main(){
 
   FILE *pF;
 
-  pF = fopen("cod_hab.txt", "r");
-
-  if(pF == NULL)
-  {
-    printf("Error on open the file.\n");
-    return -1;
-  }
-
-  i = 0;
-  while (fscanf(pF, "(%[^)]):(%d)\n", cod, &hab) != EOF)
-  {
-    scod = cod;
-    scod.erase(0,1);
-    icod = stoi(scod);
-    insertVertexOnGraph(S, icod, hab, i);
-    ++i;
-  }
-
-  fclose(pF);
-
   pF = fopen("cod-hab_schools.txt", "r");
 
   if(pF == NULL)
@@ -76,11 +96,33 @@ int main(){
     scod = cod;
     scod.erase(0,1);
     icod = stoi(scod);
-    insertVertexOnGraph(T, icod, hab, i);
+    insertVertexOnGraph(T, icod-1, hab, i);
     ++i;
   }
 
   fclose(pF);
+
+  pF = fopen("cod_hab.txt", "r");
+
+  if(pF == NULL)
+  {
+    printf("Error on open the file.\n");
+    return -1;
+  }
+
+  while (fscanf(pF, "(%[^)]):(%d)\n", cod, &hab) != EOF)
+  {
+    scod = cod;
+    scod.erase(0,1);
+    icod = stoi(scod);
+    insertVertexOnGraph(S, icod-1, hab, i);
+    insertAdjOnVertex(calcAdj(findSchoolsAdj(hab), S), i);
+    ++i;
+  }
+
+  fclose(pF);
+
+  printAllGraph();
 
   return 0;
 }

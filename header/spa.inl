@@ -34,7 +34,10 @@ using namespace std;
 
 /* -- Functions to create and populate the base graph -- */
 
-int readFile(string, string);
+void insertAdjOnVertex(vector<int>, int);
+vector<int> calcAdj(vector<int>, int);
+vector<int> findSchoolsAdj(int);
+void insertVertexOnGraph(int, int, int, int);
 
 /* -- Global variables definitions -- */
 
