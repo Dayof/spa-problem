@@ -52,7 +52,7 @@ vector<int> calcAdj(vector<int> raw_adj, int entity)
   {
     // 99 = 100 - 1
     if(entity) final_adj[i] = raw_adj[i] + 99;
-    else final_adj[i] = raw_adj[i] - 1;
+    else final_adj[i] = raw_adj[i];
   }
 
   return final_adj;
