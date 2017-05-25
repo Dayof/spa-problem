@@ -135,8 +135,7 @@ int main(){
 
   while (fscanf(pF, "(%[^)]):(%d)\n", cod, &hab) != EOF)
   {
-    scod = cod;
-    insertVertexOnGraph(S, convStringToInt(scod)-1, hab, i);
+    insertVertexOnGraph(S, i, hab, i);
 
     if(hab==1)
       t_adj = all_t_adj[0];
