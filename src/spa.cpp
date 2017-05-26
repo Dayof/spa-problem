@@ -11,6 +11,139 @@
 
 #include "spa.inl"
 
+/**
+ * Information message to guide the user to press any key to continue using the
+ *  system.
+ *
+ * @return void
+ */
+void pressToContinue(){
+    cout << endl << "\t    Aperte <QUALQUER TECLA> para voltar ao menu.    ";
+    getchar();
+    getchar();
+}
+
+
+void displayPrefTeach(){
+
+
+    pressToContinue();
+}
+
+void displayPrefSchool(){
+
+
+    pressToContinue();
+}
+
+/**
+ * Print the hole Graph.
+ *
+ * @return void
+ */
+void printAllGraph()
+{
+  for(int i=0; i < GRAPHSIZE; ++i)
+  {
+    printf("Entity : %d | Cod : %d | Hab : %d | Adj : \n", GRAPH[i].first.second, GRAPH[i].first.first.first, GRAPH[i].first.first.second);
+    for(int j=0; j<GRAPH[i].second.size(); ++j)
+      printf("%d -> ", GRAPH[i].second[j]);
+    printf("\n");
+  }
+
+  pressToContinue();
+}
+
+
+/**
+ * Displays the help screen.
+ *
+ * @return void
+ */
+void displayHelpUI(){
+    cout << "\t--------------Teacher School Allocation Problem-------------" << endl;
+    cout << "\t- Terceiro projeto da materia de Teoria e Aplicacao        -" << endl;
+    cout << "\t- de Grafos (TAG) do semestre de 2017/1.                   -" << endl;
+    cout << "\t- Feito por Dayanne Fernandes e Renato Nobre               -" << endl;
+    cout << "\t-                                                          -" << endl;
+    cout << "\t- O trabalho implementa um grafo bidirecionado de          -" << endl;
+    cout << "\t- professores e faculdades. E procura o emparelhamento     -" << endl;
+    cout << "\t- perfeito para o grafo. As opcão 1 mostra o               -" << endl;
+    cout << "\t- emparelhamento com base nas escolas, a opcao 2 mostra o  -" << endl;
+    cout << "\t- emparelhamento com base nos professores, e a opcao 3     -" << endl;
+    cout << "\t- mostra o grafo completo.                                 -" << endl;
+    cout << "\t------------------------------------------------------------" << endl;
+
+    pressToContinue();
+}
+
+
+/**
+ * Displays the main user interface of the project.
+ *
+ * @return void
+ */
+void displayUI(){
+    CLEARSCR();
+
+    cout << "\t--------------Teacher School Allocation Problem-------------" << endl;
+    cout << "\t-                                                          -" << endl;
+    cout << "\t- 1. Alocacao com preferencia do professor                 -" << endl;
+    cout << "\t- 2. Alocacao com preferencia da escola                    -" << endl;
+    cout << "\t- 3. Grafo                                                 -" << endl;
+    cout << "\t- 4. Ajuda                                                 -" << endl;
+    cout << "\t- 5. Sair                                                  -" << endl;
+    cout << "\t-                                                          -" << endl;
+    cout << "\t------------------------------------------------------------" << endl;
+    cout << endl << "\t>>> ";
+}
+
+/**
+ * Displays a message when the user inputs a not valid choice for the
+ *  processUIChoice.
+ *
+ * @return void
+ */
+void displayWrongChoiceUI(){
+    displayUI();
+    cout << "\tEscolha invalida, informe um valor de 1 a 5" << endl;
+    cout << "\t>>> ";
+}
+
+/**
+ * Process what is the user's choice of the main user interface
+ *  and call the respective method.
+ *
+ * @return void
+ */
+void processUIChoice(){
+    int choice = 0;
+
+    cin >> choice;
+
+    while(choice != 5){
+        CLEARSCR();
+
+        if(choice == 1){
+            displayPrefTeach();
+            displayUI();
+        } else if(choice == 2){
+            displayPrefSchool();
+            displayUI();
+        } else if(choice == 3){
+            printAllGraph();
+            displayUI();
+        } else if(choice == 4){
+            displayHelpUI();
+            displayUI();
+        } else {
+            displayWrongChoiceUI();
+        }
+
+        cin >> choice;
+    }
+
+}
 
 // void spaT()
 // {
@@ -19,6 +152,20 @@
 //   while()
 // }
 
+
+/**
+ * Incert a vertex with entyty, code, habilities ans position on the GRAPH.
+ *
+ * @param entity int value that determine if the vertex is a professor or school
+ *
+ * @param cod professor or school code
+ *
+ * @param hab amount of habilities a professor have or a school requires
+ *
+ * @param posix position index of the vertex to be inserted
+ *
+ * @return void
+ */
 void insertVertexOnGraph(int entity, int cod, int hab, int posix)
 {
   ii inner_node = make_pair(cod, hab);
@@ -44,6 +191,8 @@ vector<vector<int>> findSchoolsPerHab()
   return all_t_adj;
 }
 
+
+
 vector<int> calcAdj(vector<int> raw_adj, int entity)
 {
   vector<int> final_adj(raw_adj.size());
@@ -58,22 +207,28 @@ vector<int> calcAdj(vector<int> raw_adj, int entity)
   return final_adj;
 }
 
+/**
+ * Insert Edges on the graph.
+ *
+ * @param adj  vector of adjecents to represent the edges
+ *
+ * @param v_origin index of the origin vertex
+ *
+ * @return void
+ */
 void insertAdjOnVertex(vector<int> adj, int v_origin)
 {
   GRAPH[v_origin].second = adj;
 }
 
-void printAllGraph()
-{
-  for(int i=0; i < GRAPHSIZE; ++i)
-  {
-    printf("Entity : %d | Cod : %d | Hab : %d | Adj : \n", GRAPH[i].first.second, GRAPH[i].first.first.first, GRAPH[i].first.first.second);
-    for(int j=0; j<GRAPH[i].second.size(); ++j)
-      printf("%d -> ", GRAPH[i].second[j]);
-    printf("\n");
-  }
-}
 
+/**
+ * Convert string to int. Used to remove E and T from the text file.
+ *
+ * @param word  the string to be converted
+ *
+ * @return iword integer made from the string
+ */
 int convStringToInt(string word)
 {
   int iword;
@@ -150,7 +305,10 @@ int main(){
 
   fclose(pF);
 
-  printAllGraph();
+  // printAllGraph();
+
+  displayUI();
+  processUIChoice();
 
   return 0;
 }
