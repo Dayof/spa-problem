@@ -14,6 +14,8 @@ def spa_teacher(graph):
         fst = graph[ft][2][0]
         final_match[fst] = [ft]
         vf[fst] -= 1
+        # tf was assigned, so remove from the free list of teachers
+        tf.remove(ft)
         # school is over subscribed
         if vf[fst] < 0:
             removed = False
@@ -23,10 +25,17 @@ def spa_teacher(graph):
                     final_match[fst].remove(j)
                     removed = True
                     vf[fst] += 1
+                    # teacher j was remove from a matching, so put this j back
+                    #   to the free list of teachers
+                    tf.insert(j)
                     break
+                else:
+                    pass
 
             if not removed:
                 final_match[fst].remove(j)
+                vf[fst] += 1
+                tf.insert(j)
         # school is full
         if vf[fst] == 0:
             pass
