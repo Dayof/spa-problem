@@ -5,17 +5,21 @@ def worstTeacher(final_match, school, school_pref_list):
     index_to_look = [j[0] for j in final_match if j[1] == school]
 
     for i in index_to_look:
-        ind = school_pref_list.index(i)
-        if ind > big_index:
-            big_index = ind
+        if i in school_pref_list:
+            ind = school_pref_list.index(i)
+            if ind > big_index:
+                big_index = ind
 
-    return school_pref_list[big_index]
+    return school_pref_list[big_index] if big_index > -1 else -1
 
-def spa_teacher(graph):
+def spa_teacher(graph, t, s):
     # Tf: teachers free list
     # Sf: schools free list
     # Vs: list of vacancies of each school
-    Tf, Sf, Vs = list(range(6)), list(range(5, 9)) , {6:2, 7:2, 8:2}
+    Tf, Sf, Vs = list(range(t)), list(range(t, s)), {}
+
+    for i in range(t, s):
+        Vs[i] = 2
 
     # list of tuples of the final maximum bipartide matching
     final_match = []
@@ -41,6 +45,7 @@ def spa_teacher(graph):
         if Vs[fs] < 0:
             # get worst teacher
             wt = worstTeacher(final_match, fs, graph[fs][1])
+            # print('under ', wt, fs)
             if wt > -1:
                 # delete the worst teacher temporary assigned
                 final_match.remove((wt, fs))
@@ -59,18 +64,22 @@ def spa_teacher(graph):
             if wt > -1:
                 index_wt = graph[fs][1].index(wt) + 1
                 wt_sucessors = graph[fs][1][index_wt:]
+                # print('full ', wt, wt_sucessors)
                 if wt_sucessors:
                     for i in wt_sucessors:
                         # remove teachers sucessors after the index of the worst
                         # teacher on the school preference list
-                        graph[fs][1].remove(i)
+                        if i in graph[fs][1]:
+                            graph[fs][1].remove(i)
                         # also, remove this school preferenre on the teachers
                         # removed preference list
-                        graph[i][1].remove(fs)
+                        if fs in graph[i][1]:
+                            graph[i][1].remove(fs)
 
         # get next free teacher on ft
         ft = Tf[0]
         Tf.remove(ft)
+
 
     return final_match
 
@@ -80,4 +89,7 @@ for i in range(int(input())):
     ent, cod, adj = line[0], line[1], list(map(int, line[2].split()))
     graph[i] = (ent, adj)
 
-print(spa_teacher(graph))
+# 99, 150
+# 6, 9
+# print(graph)
+print(spa_teacher(graph, 6, 9))
