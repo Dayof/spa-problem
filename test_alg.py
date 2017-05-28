@@ -27,10 +27,13 @@ def spa_teacher(graph, t, s):
     # first free teacher to test
     ft = Tf[0]
     Tf.remove(ft)
+    run = True
 
     # while there is a free teacher on Tf and this teacher still have a
     # school to go
-    while Tf and graph[ft][1]:
+    while run and graph[ft][1]:
+        run = True if Tf else False
+
         # get first school of Tf
         fs = graph[ft][1][0]
 
@@ -84,9 +87,9 @@ def spa_teacher(graph, t, s):
                             graph[i][1].remove(fs)
 
         # get next free teacher on ft
-        ft = Tf[0]
-        Tf.remove(ft)
-
+        if Tf:
+            ft = Tf[0]
+            Tf.remove(ft)
 
     return final_match
 
@@ -96,7 +99,13 @@ for i in range(int(input())):
     ent, cod, adj = line[0], line[1], list(map(int, line[2].split()))
     graph[i] = (ent, adj)
 
-# 99, 150
-# 6, 9
+# real stub to test: 99, 150
+# first stub: 6, 9
+# 5, 10
+# 4, 8
+# slide stub: 3, 6
 # print(graph)
-print(spa_teacher(graph, 99, 150))
+result = spa_teacher(graph, 99, 150)
+schools = set([j[1] for j in result])
+teachers = set([j[0] for j in result])
+print(result, '\nteachers assigned: ', len(teachers), '\nschools assigned: ', len(schools))
