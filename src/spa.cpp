@@ -68,7 +68,7 @@ void displayHelpUI(){
     cout << "\t-                                                          -" << endl;
     cout << "\t- O trabalho implementa um grafo bidirecionado de          -" << endl;
     cout << "\t- professores e faculdades. E procura o emparelhamento     -" << endl;
-    cout << "\t- perfeito para o grafo. As opcão 1 mostra o               -" << endl;
+    cout << "\t- perfeito para o grafo. A opcão 1 mostra o                -" << endl;
     cout << "\t- emparelhamento com base nas escolas, a opcao 2 mostra o  -" << endl;
     cout << "\t- emparelhamento com base nos professores, e a opcao 3     -" << endl;
     cout << "\t- mostra o grafo completo.                                 -" << endl;
