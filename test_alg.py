@@ -35,7 +35,8 @@ def spa_teacher(graph, t, s):
         fs = graph[ft][1][0]
 
         # assign this teacher temporary on a school
-        final_match.append((ft, fs))
+        last_match = (ft, fs)
+        final_match.append(last_match)
         # delete this school preference on the teacher preference list
         graph[ft][1].remove(fs)
         # decrease one vacancy of that school
@@ -45,7 +46,7 @@ def spa_teacher(graph, t, s):
         if Vs[fs] < 0:
             # get worst teacher
             wt = worstTeacher(final_match, fs, graph[fs][1])
-            # print('under ', wt, fs)
+            # print('under ', wt, graph[fs][1], fs, final_match)
             if wt > -1:
                 # delete the worst teacher temporary assigned
                 final_match.remove((wt, fs))
@@ -55,12 +56,18 @@ def spa_teacher(graph, t, s):
                 graph[fs][1].remove(wt)
                 # increase one vancacy of that school
                 Vs[fs] += 1
+            else:
+                # if on the final match there is no teacher of the preference of
+                # that school, delete the last one
+                final_match.remove(last_match)
+                # increase one vancacy of that school
+                Vs[fs] += 1
+
 
         # check if school vacancy is full
         if Vs[fs] == 0:
             # get worst teacher
             wt = worstTeacher(final_match, fs, graph[fs][1])
-            # print(wt)
             if wt > -1:
                 index_wt = graph[fs][1].index(wt) + 1
                 wt_sucessors = graph[fs][1][index_wt:]
@@ -92,4 +99,4 @@ for i in range(int(input())):
 # 99, 150
 # 6, 9
 # print(graph)
-print(spa_teacher(graph, 6, 9))
+print(spa_teacher(graph, 99, 150))
