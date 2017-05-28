@@ -68,8 +68,8 @@ def spa_teacher(graph):
                         graph[i][1].remove(fs)
 
         # get next free teacher on ft
-        tf = Tf[0]
-        Tf.remove(tf)
+        ft = Tf[0]
+        Tf.remove(ft)
 
     return final_match
 
