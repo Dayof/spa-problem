@@ -9,7 +9,7 @@ def worstTeacher(final_match, school, school_pref_list):
         if ind > big_index:
             big_index = ind
 
-    return big_index
+    return school_pref_list[big_index]
 
 def spa_teacher(graph):
     # Tf: teachers free list
@@ -38,7 +38,7 @@ def spa_teacher(graph):
         Vs[fs] -= 1
 
         # check if school vacancy is over subscribed
-        if Vs[fs] > 2:
+        if Vs[fs] < 0:
             # get worst teacher
             wt = worstTeacher(final_match, fs, graph[fs][1])
             if wt > -1:
@@ -52,9 +52,10 @@ def spa_teacher(graph):
                 Vs[fs] += 1
 
         # check if school vacancy is full
-        if Vs[fs] == 2:
+        if Vs[fs] == 0:
             # get worst teacher
             wt = worstTeacher(final_match, fs, graph[fs][1])
+            # print(wt)
             if wt > -1:
                 index_wt = graph[fs][1].index(wt) + 1
                 wt_sucessors = graph[fs][1][index_wt:]
