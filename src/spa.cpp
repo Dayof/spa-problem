@@ -175,7 +175,7 @@ int worstTeacher(vector<pair<int, int>> final_match, int school, vector<int> sch
 
     for(int i = 0; i < index_to_look.size(); i++)
         for(int j = 0; j < school_pref_list.size(); j++)
-            if(school_pref_list[j] == i){
+            if(school_pref_list[j] == index_to_look[i]){
                 ind = j;
                 if(ind > big_index)
                     big_index = ind;
@@ -195,14 +195,14 @@ vector<int> wtSuccessorsList(int fs, int index_wt){
 
 void spa_teacher(vector<iiiv> G){
 
-    int ft, fs, actual_place_fs, wt, index_wt;
+    int ft, fs, wt, index_wt;
     // Tf: teachers free list
     vector<int> Tf, edge, wt_successors;
     // Vs: dict of vacancies of each school
     map<int, int> Vs;
     // list of tuples of the stable marriage
     vector<pair<int, int>> final_match;
-    pair<int, int> last_match;
+    pair<int, int> last_match, tmp_last_match;
     bool run = true;
 
     for(int i = 0 ; i < TEACHERSIZE ;i++)
@@ -217,7 +217,7 @@ void spa_teacher(vector<iiiv> G){
 
     // while there is a free teacher
     while(run){
-      if(!G[ft].second.empty() && !Tf.empty())
+      if(G[ft].second.empty() && !Tf.empty())
       {
         ft = Tf[0];
         Tf.erase(remove(Tf.begin(), Tf.end(), ft), Tf.end());
@@ -244,8 +244,9 @@ void spa_teacher(vector<iiiv> G){
           wt = worstTeacher(final_match, fs, G[fs].second);
           if(wt > -1){
               // delete the worst teacher temporary assigned
+              tmp_last_match = make_pair(wt, fs);
               final_match.erase(remove(final_match.begin(),
-                                  final_match.end(), make_pair(wt, fs)),
+                                  final_match.end(), tmp_last_match),
                                   final_match.end());
               // put this teacher back on the free list of teachers
               Tf.push_back(wt);
@@ -309,7 +310,7 @@ void spa_teacher(vector<iiiv> G){
       }
   }
 
-  // temporary print 
+  // temporary print
   for(auto elem : final_match)
       cout << elem.first << "->" << elem.second << endl;
 
