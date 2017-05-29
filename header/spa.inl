@@ -42,8 +42,6 @@ vector<int> calcAdj(vector<int>, int);
 vector<vector<int>> findSchoolsPerHab();
 void insertVertexOnGraph(int, int, int, int);
 
-void spa_teacher();
-
 /* -- Global variables definitions -- */
 
 #define GRAPHSIZE 150
@@ -61,5 +59,7 @@ void spa_teacher();
 #define iiiv pair <iii, vector<int> >
 
 vector<iiiv> GRAPH(GRAPHSIZE);
+
+void spa_teacher(vector<iiiv>);
 
 #endif // HEADERS_INL_INCLUDED
