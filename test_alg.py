@@ -33,7 +33,12 @@ def spa_teacher(t, s):
 
     # while there is a free teacher on Tf and this teacher still have a
     # school to go
-    while run and graph[ft][1]:
+    while run:
+        if not graph[ft][1] and Tf:
+            ft = Tf[0]
+            Tf.remove(ft)
+            continue
+
         run = True if Tf else False
 
         # get first school of Tf
@@ -65,6 +70,8 @@ def spa_teacher(t, s):
                 # if on the final match there is no teacher of the preference of
                 # that school, delete the last one
                 final_match.remove(last_match)
+                # put this last back on the free list of teachers
+                Tf.append(last_match[0])
                 # increase one vancacy of that school
                 Vs[fs] += 1
 
@@ -93,6 +100,7 @@ def spa_teacher(t, s):
             ft = Tf[0]
             Tf.remove(ft)
 
+    # print(graph[ft][1], ft, Tf)
     return final_match
 
 graph = {}
@@ -103,14 +111,22 @@ for i in range(int(input())):
 
 # stub2: 99, 150
 # stub: 6, 9
-# stub3 and stub6: 5, 10
-# stub4: 4, 8
+# stub3: 5, 10
+# stub4 and stub6: 4, 8
 # stub5: 3, 6
 cp_graph = copy.deepcopy(graph)
 result = spa_teacher(99, 150)
 schools = set([j[1] for j in result])
 teachers = set([j[0] for j in result])
+schools = sorted(schools)
 count1, count2, count3, count4, count5 = 0, 0, 0, 0, 0
+tps = {}
+print('--- Set of teachers assigned ---\n', teachers)
+print('--- Set of schools assigned ---\n', schools)
+print('--- Professors per school ---')
+for i in schools:
+    tps[i] = [j[0] for j in result if j[1] == i]
+print(tps)
 for i in result:
     # print(i[1], cp_graph[i[0]][1][0])
     if i[1] == cp_graph[i[0]][1][0]:
@@ -123,4 +139,19 @@ for i in result:
         count4 += 1
     elif i[1] == cp_graph[i[0]][1][1]:
         count5 += 1
-print(result, '\nperfect match for %s teachers' % (count1), '\nc2: %s | c3: %s | c4: %s | c5: %s ' % (count2, count3, count4, count5), '\nteachers assigned: ', len(teachers), '\nschools assigned: ', len(schools))
+print('--- Schools with one teacher ---')
+schools_one = [key for key, value in tps.items() if len(value) == 1]
+print(schools_one)
+print('--- Free teachers ---')
+free_t = [i for i in range(100) if i not in teachers]
+print(free_t)
+print('--- Exist free schools which any free teacher want to go? ---')
+answer = False
+for i in free_t:
+    for j in schools_one:
+        if j in cp_graph[i][1]:
+            answer = False
+            print('Yes, school %s can employ teacher %s' % (j, i))
+if not answer:
+    print('No!')
+print('---- Result ----\n', result, '\nperfect match for %s teachers' % (count1), '\nc2: %s | c3: %s | c4: %s | c5: %s ' % (count2, count3, count4, count5), '\nteachers assigned: ', len(teachers), '\nschools assigned: ', len(schools))
