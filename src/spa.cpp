@@ -165,13 +165,13 @@ void processUIChoice(){
 
 // worst teacher means that is the last teacher temporary assignment on the
 // preference list of the school
-int worstTeacher(vector<map<int, int>> final_match, int school, vector<int> school_pref_list){
+int worstTeacher(vector<pair<int, int>> final_match, int school, vector<int> school_pref_list){
     int ind, big_index = -1;
     vector<int> index_to_look;
 
     for(auto elem : final_match)
-      if(elem.second == school){
-          index_to_look.push_back(elem.first);
+        if(elem.second == school)
+            index_to_look.push_back(elem.first);
 
     for(int i = 0; i < index_to_look.size(); i++)
         for(int j = 0; j < school_pref_list.size(); j++)
@@ -197,27 +197,30 @@ void spa_teacher(vector<iiiv> G){
 
     int ft, fs, actual_place_fs, wt, index_wt;
     // Tf: teachers free list
-    // Vs: list of vacancies of each school
-    vector<int> Tf, Vs, edge, wt_successors;
+    vector<int> Tf, edge, wt_successors;
+    // Vs: dict of vacancies of each school
+    map<int, int> Vs;
     // list of tuples of the stable marriage
-    vector<map<int, int>> final_match;
-    map<int, int> last_match;
+    vector<pair<int, int>> final_match;
+    pair<int, int> last_match;
     bool run = true;
 
     for(int i = 0 ; i < TEACHERSIZE ;i++)
         Tf.push_back(i);
-        if(i < 50) Vs.push_back(2);
+
+    for(int i = TEACHERSIZE-1 ; i < GRAPHSIZE ;i++)
+        Vs[i] = 2;
 
     // first free teacher to test
     ft = Tf[0];
-    Tf.remove(ft);
+    Tf.erase(remove(Tf.begin(), Tf.end(), ft), Tf.end());
 
     // while there is a free teacher
     while(run){
       if(!G[ft].second.empty() && !Tf.empty())
       {
         ft = Tf[0];
-        Tf.remove(ft);
+        Tf.erase(remove(Tf.begin(), Tf.end(), ft), Tf.end());
         continue;
       }
 
@@ -229,60 +232,71 @@ void spa_teacher(vector<iiiv> G){
       last_match = make_pair(ft, fs);
       final_match.push_back(last_match);
       // delete this school preference on the teacher preference list
-      G[ft].second.remove(fs);
+      G[ft].second.erase(remove(G[ft].second.begin(),
+                        G[ft].second.end(), fs),
+                        G[ft].second.end());
       // decrease one vacancy of that school
-      actual_place_fs = fs-100
-      Vs[actual_place_fs]--;
+      Vs[fs]--;
 
       // check if school vacancy is over subscribed
-      if(Vs[actual_place_fs] < 0){
+      if(Vs[fs] < 0){
           // get worst teacher
-          wt = worstTeacher(final_match, actual_place_fs, G[fs].second);
+          wt = worstTeacher(final_match, fs, G[fs].second);
           if(wt > -1){
               // delete the worst teacher temporary assigned
-              final_match.remove(wt);
+              final_match.erase(remove(final_match.begin(),
+                                  final_match.end(), make_pair(wt, fs)),
+                                  final_match.end());
               // put this teacher back on the free list of teachers
               Tf.push_back(wt);
               // remove this teacher from the preference of that school
-              G[actual_place_fs].second.remove(wt)
+              G[fs].second.erase(
+                            remove(G[fs].second.begin(),
+                                G[fs].second.end(), wt),
+                                G[fs].second.end());
               // increase one vancacy of that school
-              Vs[actual_place_fs]++;
+              Vs[fs]++;
           } else {
               // if on the final match there is no teacher of the preference
               // of that school, delete the last one
-              final_match.remove(last_match);
+              final_match.erase(remove(final_match.begin(),
+                                  final_match.end(), last_match),
+                                  final_match.end());
               // put this last back on the free list of teachers
-              Tf.push_back(final_match.first);
+              Tf.push_back(last_match.first);
               // increase one vancacy of that school
-              Vs[actual_place_fs]++;
+              Vs[fs]++;
           }
       }
 
       // check if school vacancy is full
-      if(Vs[actual_place_fs] == 0){
+      if(Vs[fs] == 0){
           // get worst teacher
-          wt = worstTeacher(final_match, actual_place_fs, G[fs].second);
+          wt = worstTeacher(final_match, fs, G[fs].second);
           if(wt > -1){
-              index_wt = find(G[actual_place_fs].second.begin(),
-                            G[actual_place_fs].second.end(), wt) + 1;
-              wt_successors = wtSuccessorsList(actual_place_fs, *index_wt);
+              index_wt = *(find(G[fs].second.begin(),
+                            G[fs].second.end(), wt)) + 1;
+              wt_successors = wtSuccessorsList(fs, index_wt);
 
               if(!wt_successors.empty()){
                   for(int i = 0; i < wt_successors.size();i++){
                       // remove teachers sucessors after the index of the
                       // worst teacher on the school preference list
-                      if(find(G[actual_place_fs].second.begin(),
-                          G[actual_place_fs].second.end(),
-                          wt_successors[i]) != G[actual_place_fs].second.end())
-                          G[actual_place_fs].second.remove(wt_successors[i])
+                      if(find(G[fs].second.begin(),
+                          G[fs].second.end(),
+                          wt_successors[i]) != G[fs].second.end())
+                          G[fs].second.erase(
+                            remove(G[fs].second.begin(), G[fs].second.end(), wt_successors[i]),
+                            G[fs].second.end());
 
                       // also, remove this school preferenre on the teachers
                       // removed preference list
                       if(find(G[wt_successors[i]].second.begin(),
                           G[wt_successors[i]].second.end(),
-                          actual_place_fs) != G[wt_successors[i]].second.end())
-                          G[wt_successors[i]].second.remove(actual_place_fs)
-
+                          fs) != G[wt_successors[i]].second.end())
+                          G[wt_successors[i]].second.erase(
+                            remove(G[wt_successors[i]].second.begin(), G[wt_successors[i]].second.end(), fs),
+                            G[wt_successors[i]].second.end());
                   }
               }
           }
@@ -291,13 +305,13 @@ void spa_teacher(vector<iiiv> G){
       // get next free teacher on ft
       if(!Tf.empty()){
           ft = Tf[0];
-          Tf.remove(ft);
+          Tf.erase(remove(Tf.begin(), Tf.end(), ft), Tf.end());
       }
   }
 
-  // TEMPORARY PRINT
+  // temporary print 
   for(auto elem : final_match)
-     cout << elem.first << "->" << elem.second << endl;
+      cout << elem.first << "->" << elem.second << endl;
 
 }
 
