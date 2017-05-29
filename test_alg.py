@@ -19,7 +19,7 @@ def spa_teacher(graph, t, s):
     Tf, Sf, Vs = list(range(t)), list(range(t, s)), {}
 
     for i in range(t, s):
-        Vs[i] = 2
+        Vs[i] = 1
 
     # list of tuples of the final maximum bipartide matching
     final_match = []
@@ -99,11 +99,11 @@ for i in range(int(input())):
     ent, cod, adj = line[0], line[1], list(map(int, line[2].split()))
     graph[i] = (ent, adj)
 
-# real stub to test: 99, 150
-# first stub: 6, 9
-# 5, 10
-# 4, 8
-# slide stub: 3, 6
+# stub2: 99, 150
+# stub: 6, 9
+# stub3: 5, 10
+# stub4: 4, 8
+# stub5: 3, 6
 # print(graph)
 result = spa_teacher(graph, 99, 150)
 schools = set([j[1] for j in result])
