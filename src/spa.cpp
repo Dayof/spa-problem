@@ -163,6 +163,25 @@ void processUIChoice(){
 
 }
 
+void printTeachersPerSchool(vector<pair<int, int>> final_match)
+{
+  map<int, vector<int>> items;
+
+  for(int i = TEACHERSIZE; i < GRAPHSIZE; ++i)
+    items[i] = vector<int>();
+
+  for(auto elem : final_match)
+    items[elem.second].push_back(elem.first);
+
+  for(auto elem : items)
+  {
+    cout << elem.first << " : ";
+    for(auto i : elem.second)
+      cout << i << " ";
+    cout << endl;
+  }
+}
+
 // worst teacher means that is the last teacher temporary assignment on the
 // preference list of the school
 int worstTeacher(vector<pair<int, int>> final_match, int school, vector<int> school_pref_list){
@@ -310,9 +329,11 @@ void spa_teacher(vector<iiiv> G){
       }
   }
 
+  printTeachersPerSchool(final_match);
+
   // temporary print
-  for(auto elem : final_match)
-      cout << elem.first << "->" << elem.second << endl;
+  // for(auto elem : final_match)
+  //     cout << elem.first << "->" << elem.second << endl;
 
 }
 
