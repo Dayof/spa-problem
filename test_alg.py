@@ -16,9 +16,8 @@ def worstTeacher(final_match, school, school_pref_list):
 
 def spa_teacher(t, s):
     # Tf: teachers free list
-    # Sf: schools free list
     # Vs: list of vacancies of each school
-    Tf, Sf, Vs = list(range(t)), list(range(t, s)), {}
+    Tf, Vs = list(range(t)), {}
 
     for i in range(t, s):
         Vs[i] = 2

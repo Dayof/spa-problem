@@ -245,13 +245,13 @@ void spa_teacher(vector<iiiv> G){
     // Tf: teachers free list
     // Sf: schools free list
     // Vs: list of vacancies of each school
-    vector<int> tf, sf, vs, edge, wt_successors;
+    vector<int> Tf, Sf, Vs, edge, wt_successors;
     // list of tuples of the final maximum bipartide matching
     map<int, int> final_match;
     bool run;
 
-    tf = initializeTF();
-    sf = initializeSF();
+    Tf = initializeTF();
+    Sf = initializeSF();
 
     for(int i = 0 ; i < sf.size() ;i++){
         vs.push_back(2);
