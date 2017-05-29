@@ -1,3 +1,5 @@
+import copy
+
 # worst teacher means the last temporary assignment on the prefered
 # list of the school
 def worstTeacher(final_match, school, school_pref_list):
@@ -12,7 +14,7 @@ def worstTeacher(final_match, school, school_pref_list):
 
     return school_pref_list[big_index] if big_index > -1 else -1
 
-def spa_teacher(graph, t, s):
+def spa_teacher(t, s):
     # Tf: teachers free list
     # Sf: schools free list
     # Vs: list of vacancies of each school
@@ -104,8 +106,21 @@ for i in range(int(input())):
 # stub3 and stub6: 5, 10
 # stub4: 4, 8
 # stub5: 3, 6
-# print(graph)
-result = spa_teacher(graph, 99, 150)
+cp_graph = copy.deepcopy(graph)
+result = spa_teacher(99, 150)
 schools = set([j[1] for j in result])
 teachers = set([j[0] for j in result])
-print(result, '\nteachers assigned: ', len(teachers), '\nschools assigned: ', len(schools))
+count1, count2, count3, count4, count5 = 0, 0, 0, 0, 0
+for i in result:
+    # print(i[1], cp_graph[i[0]][1][0])
+    if i[1] == cp_graph[i[0]][1][0]:
+        count1 += 1
+    elif i[1] == cp_graph[i[0]][1][1]:
+        count2 += 1
+    elif i[1] == cp_graph[i[0]][1][2]:
+        count3 += 1
+    elif i[1] == cp_graph[i[0]][1][3]:
+        count4 += 1
+    elif i[1] == cp_graph[i[0]][1][1]:
+        count5 += 1
+print(result, '\nperfect match for %s teachers' % (count1), '\nc2: %s | c3: %s | c4: %s | c5: %s ' % (count2, count3, count4, count5), '\nteachers assigned: ', len(teachers), '\nschools assigned: ', len(schools))
