@@ -63,8 +63,6 @@ void insertVertexOnGraph(int, int, int, int);
 
 vector<iiiv> GRAPH(GRAPHSIZE);
 
-
-
 /* -- Functions of the main problem -- */
 void processUIChoice();
 vector<ii> spa_teacher(vector<iiiv>);

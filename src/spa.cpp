@@ -78,17 +78,17 @@ void printAllGraph()
 
   for(int i=0; i < GRAPHSIZE; ++i)
   {
-    if(GRAPH[i].first.second  == 0 ){
+    if(GRAPH[i].first.second == 0){
         if(flag){
             cout << endl << endl << "GRAFO BIDIRECIONADO MOSTANDO AS ESCOLAS E SEUS REQUERIDOS PROFESSORES" << endl << endl;
             flag = 0;
         }
 
-        cout << "E" << GRAPH[i].first.first.first-99 << " : ";
+        cout << "E" << GRAPH[i].first.first.first-99 << " | " <<  "HAB " <<
+        GRAPH[i].first.first.second << " : ";
 
-        for(int j=0;j<GRAPH[i].second.size();j++){
-            cout << "P" << GRAPH[i].second[j] << "-> ";
-        }
+        for(int j=0;j<GRAPH[i].second.size();j++)
+            cout << "P" << GRAPH[i].second[j] << " ";
 
         cout << " \\ " << endl << endl;
 
@@ -98,10 +98,10 @@ void printAllGraph()
             flag2 = 0;
         }
 
-        cout << "P" << GRAPH[i].first.first.first << " : ";
-        for(int j=0;j<GRAPH[i].second.size();j++){
-            cout << "E" << GRAPH[i].second[j] << " -> ";
-        }
+        cout << "P" << GRAPH[i].first.first.first << " | " <<  "HAB " <<
+        GRAPH[i].first.first.second << " : ";
+        for(int j=0;j<GRAPH[i].second.size();j++)
+            cout << "E" << GRAPH[i].second[j] << " ";
 
         cout << " \\ " << endl;
     }
