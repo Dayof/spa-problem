@@ -19,7 +19,7 @@ def spa_teacher(graph, t, s):
     Tf, Sf, Vs = list(range(t)), list(range(t, s)), {}
 
     for i in range(t, s):
-        Vs[i] = 1
+        Vs[i] = 2
 
     # list of tuples of the final maximum bipartide matching
     final_match = []
@@ -101,7 +101,7 @@ for i in range(int(input())):
 
 # stub2: 99, 150
 # stub: 6, 9
-# stub3: 5, 10
+# stub3 and stub6: 5, 10
 # stub4: 4, 8
 # stub5: 3, 6
 # print(graph)
