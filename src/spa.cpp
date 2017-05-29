@@ -27,8 +27,32 @@ void pressToContinue(){
 }
 
 
+
 void displayPrefTeach(){
-    spa_teacher(GRAPH);
+
+    vector<pair<int, int>> final_match;
+
+    final_match = spa_teacher(GRAPH);
+
+    map<int, vector<int>> items;
+
+    for(int i = TEACHERSIZE; i < GRAPHSIZE; ++i)
+      items[i] = vector<int>();
+
+    for(auto elem : final_match){
+        items[elem.second].push_back(elem.first);
+    }
+
+    cout << "ESCOLAS E SEUS RESPECTIVOS PROFESSORS" << endl << endl;
+
+    for(auto elem : items) {
+        cout << "E" << elem.first - 99 << " contratou ";
+        bool first = true;
+        for(auto i : elem.second){
+            cout << "P" << i << "  ";
+        }
+        cout << endl;
+    }
 
     pressToContinue();
 }
@@ -163,24 +187,6 @@ void processUIChoice(){
 
 }
 
-void printTeachersPerSchool(vector<pair<int, int>> final_match)
-{
-  map<int, vector<int>> items;
-
-  for(int i = TEACHERSIZE; i < GRAPHSIZE; ++i)
-    items[i] = vector<int>();
-
-  for(auto elem : final_match)
-    items[elem.second].push_back(elem.first);
-
-  for(auto elem : items)
-  {
-    cout << elem.first << " : ";
-    for(auto i : elem.second)
-      cout << i << " ";
-    cout << endl;
-  }
-}
 
 // worst teacher means that is the last teacher temporary assignment on the
 // preference list of the school
@@ -215,7 +221,7 @@ vector<int> wtSuccessorsList(int fs, int wt){
     return v;
 }
 
-void spa_teacher(vector<iiiv> G){
+vector<ii> spa_teacher(vector<iiiv> G){
 
     int ft, fs, wt;
     // Tf: teachers free list
@@ -329,7 +335,7 @@ void spa_teacher(vector<iiiv> G){
       }
   }
 
-  printTeachersPerSchool(final_match);
+  return final_match;
 }
 
 

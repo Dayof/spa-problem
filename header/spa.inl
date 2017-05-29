@@ -32,6 +32,13 @@ using namespace std;
 /* ----------- Definition of all functions of the program ----------- */
 
 /* -- Functions to show data on command terminal -- */
+void clear();
+void pressToContinue();
+void displayPrefTeach();
+void printAllGraph();
+void displayHelpUI();
+void displayUI();
+void displayWrongChoiceUI();
 
 
 /* -- Functions to create and populate the base graph -- */
@@ -56,6 +63,12 @@ void insertVertexOnGraph(int, int, int, int);
 
 vector<iiiv> GRAPH(GRAPHSIZE);
 
-void spa_teacher(vector<iiiv>);
+
+
+/* -- Functions of the main problem -- */
+void processUIChoice();
+vector<ii> spa_teacher(vector<iiiv>);
+int worstTeacher(vector<ii> final_match, int school, vector<int> school_pref_list);
+vector<int> wtSuccessorsList(int fs, int wt);
 
 #endif // HEADERS_INL_INCLUDED
