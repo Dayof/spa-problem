@@ -38,7 +38,7 @@ def spa_teacher(t, s):
             ft = Tf[0]
             Tf.remove(ft)
             continue
-            
+
         run = True if Tf else False
 
         # get first school of Tf
@@ -111,8 +111,8 @@ for i in range(int(input())):
 
 # stub2: 99, 150
 # stub: 6, 9
-# stub3 and stub6: 5, 10
-# stub4: 4, 8
+# stub3: 5, 10
+# stub4 and stub6: 4, 8
 # stub5: 3, 6
 cp_graph = copy.deepcopy(graph)
 result = spa_teacher(99, 150)
