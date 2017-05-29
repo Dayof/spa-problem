@@ -1,6 +1,8 @@
-# Student-Project Allocation Problem
+# Teacher-School Allocation Problem (Stable Marriage)
 
-Terceito projeto da matéria de Teoria e Aplicação de Grafos (TAG) do semestre de 2017/1. O sistema irá resolver o "famoso" problema de alocação de estudante-projeto, porém, aplicado para professor-escola.
+Terceiro projeto da matéria de Teoria e Aplicação de Grafos (TAG) do semestre de 2017/1. O sistema irá resolver o "famoso" problema de emparelhamento estável.
+
+Como orientação foi proposto a leitura do artigo (Abraham, Irving & Manlove, 2007) para seguir o problema de alocação de estudante-projeto, porém, aplicado para professor-escola.
 
 ## Execução
 
@@ -22,13 +24,15 @@ Este programa foi testado no sistema operacional ``macOS Sierra``, versão ``10.
 
 ## Detalhes sobre o projeto
 
-Este programa utiliza o arquivo ``cod_hab.txt`` e ``cod-hab_schools.txt`` para criar um grafo de professores que gostariam de trabalhar em certas escolas, e o requerimento de cada escola em relação a professores que gostariam de contratar . É gerado um estrutura abstrata de grafo bidirecionado e bipartido para representar ambos os professores e as escolas. Ao total são 50 escolas que querem contratar até 2 professores e 100 professores, que tem preferencia de 5 escolas.
+Este programa utiliza o arquivo ``cod_hab.txt`` e ``cod-hab_schools.txt`` para criar um grafo de professores que gostariam de trabalhar em certas escolas, e o requerimento de cada escola em relação a professores que gostariam de contratar . É gerado um estrutura abstrata de grafo bidirecionado e bipartido para representar ambos os professores e as escolas. Ao total são 50 escolas que querem contratar até 2 professores e 100 professores, que tem preferência de 5 escolas.
+
+Cada professor pode ter de 1 a 3 habilitações de conteúdos, e cada escola pode preferir contratar professores que contenham habilitações de 1, 2 ou 3. Este sistema é ótimo no ponto de vista do professor, ou seja, nenhum professor é alocado fora de uma escola que ele não tenha desejo de trabalhar.
 
 ### Funcionalidades
 
 O programa realiza as seguintes funcionalidades a partir do menu principal:
 
-- Opção 1 : Mostra o emparelhamento estável entre os grupos de professores e escolas, com base na preferencia do professor.
+- Opção 1 : Mostra o emparelhamento estável entre os grupos de professores e escolas, com base nas preferências dos professores.
 
 - Opção 2 : Mostra o Grafo Completo
 
@@ -45,8 +49,8 @@ O programa realiza as seguintes funcionalidades a partir do menu principal:
     - Numero de habilitações,
     - Preferencias;
 - Faz o devido tratamento dos códigos dos vértices para inserção no grafo;
-- Cria-se as listas de preferencias com os códigos atualizados;
-- Realiza o emparelhamento estável com preferencias dos professores;
+- Cria-se as listas de preferências com os códigos atualizados;
+- Realiza o emparelhamento estável ótimo para os professores;
 - Mostra a interface do usuário no terminal;
 - Espera receber alguma ação do usuário;
 - Executa a ação requisitada e volta para o menu inicial até que o usuário não queira mais utilizar o sistema (pressionando o número 4 do teclado na tela principal para sair do programa).
