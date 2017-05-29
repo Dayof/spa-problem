@@ -33,7 +33,11 @@ def spa_teacher(t, s):
 
     # while there is a free teacher on Tf and this teacher still have a
     # school to go
-    while run and graph[ft][1]:
+    while run:
+        if not graph[ft][1] and Tf:
+            ft = Tf[0]
+            Tf.remove(ft)
+            continue
         run = True if Tf else False
 
         # get first school of Tf
@@ -141,11 +145,12 @@ print('--- Free teachers ---')
 free_t = [i for i in range(100) if i not in teachers]
 print(free_t)
 print('--- Exist free schools which any free teacher want to go? ---')
+answer = False
 for i in free_t:
     for j in schools_one:
         if j in cp_graph[i][1]:
-            result.append((i, j))
+            answer = False
             print('Yes, school %s can employ teacher %s' % (j, i))
-schools = set([j[1] for j in result])
-teachers = set([j[0] for j in result])
+if not answer:
+    print('No!')
 print('---- Result ----\n', result, '\nperfect match for %s teachers' % (count1), '\nc2: %s | c3: %s | c4: %s | c5: %s ' % (count2, count3, count4, count5), '\nteachers assigned: ', len(teachers), '\nschools assigned: ', len(schools))
