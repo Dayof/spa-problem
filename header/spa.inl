@@ -45,14 +45,10 @@ void insertVertexOnGraph(int, int, int, int);
 /* -- Global variables definitions -- */
 
 #define GRAPHSIZE 150
+#define TEACHERSIZE 100
+#define SCHOOLSIZE 50
 #define T 1
 #define S 0
-
-#ifdef WINDOWS
-  #define CLEARSCR() system("cls")
-#else
-  #define CLEARSCR() system("clear")
-#endif
 
 #define ii pair<int, int>
 #define iii pair<ii, int>

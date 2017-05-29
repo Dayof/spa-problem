@@ -16,9 +16,8 @@ def worstTeacher(final_match, school, school_pref_list):
 
 def spa_teacher(t, s):
     # Tf: teachers free list
-    # Sf: schools free list
     # Vs: list of vacancies of each school
-    Tf, Sf, Vs = list(range(t)), list(range(t, s)), {}
+    Tf, Vs = list(range(t)), {}
 
     for i in range(t, s):
         Vs[i] = 2
@@ -83,7 +82,6 @@ def spa_teacher(t, s):
             if wt > -1:
                 index_wt = graph[fs][1].index(wt) + 1
                 wt_sucessors = graph[fs][1][index_wt:]
-                # print('full ', wt, wt_sucessors)
                 if wt_sucessors:
                     for i in wt_sucessors:
                         # remove teachers sucessors after the index of the worst
@@ -115,7 +113,7 @@ for i in range(int(input())):
 # stub4 and stub6: 4, 8
 # stub5: 3, 6
 cp_graph = copy.deepcopy(graph)
-result = spa_teacher(99, 150)
+result = spa_teacher(100, 150)
 schools = set([j[1] for j in result])
 teachers = set([j[0] for j in result])
 schools = sorted(schools)
