@@ -184,7 +184,7 @@ void printTeachersPerSchool(vector<pair<int, int>> final_match)
 
 // worst teacher means that is the last teacher temporary assignment on the
 // preference list of the school
-int worstTeacher(vector<pair<int, int>> final_match, int school, vector<int> school_pref_list){
+int worstTeacher(vector<ii> final_match, int school, vector<int> school_pref_list){
     int ind, big_index = -1;
     vector<int> index_to_look;
 
@@ -203,31 +203,34 @@ int worstTeacher(vector<pair<int, int>> final_match, int school, vector<int> sch
     return (big_index > -1) ? school_pref_list[big_index] : -1;
 }
 
-vector<int> wtSuccessorsList(int fs, int index_wt){
+vector<int> wtSuccessorsList(int fs, int wt){
     vector<int> v;
+    bool result = false;
 
-    for(int i=0; i < GRAPH[fs].second.size(); ++i)
-      if(i >= index_wt) v.push_back(GRAPH[fs].second[i]);
+    for(int i=0; i < GRAPH[fs].second.size(); ++i){
+      if(result) v.push_back(GRAPH[fs].second[i]);
+      else if(GRAPH[fs].second[i] == wt) result = true;
+    }
 
     return v;
 }
 
 void spa_teacher(vector<iiiv> G){
 
-    int ft, fs, wt, index_wt;
+    int ft, fs, wt;
     // Tf: teachers free list
-    vector<int> Tf, edge, wt_successors;
+    vector<int> Tf, wt_successors;
     // Vs: dict of vacancies of each school
     map<int, int> Vs;
     // list of tuples of the stable marriage
-    vector<pair<int, int>> final_match;
-    pair<int, int> last_match, tmp_last_match;
+    vector<ii> final_match;
+    ii last_match, tmp_last_match;
     bool run = true;
 
     for(int i = 0 ; i < TEACHERSIZE ;i++)
         Tf.push_back(i);
 
-    for(int i = TEACHERSIZE-1 ; i < GRAPHSIZE ;i++)
+    for(int i = TEACHERSIZE; i < GRAPHSIZE ;i++)
         Vs[i] = 2;
 
     // first free teacher to test
@@ -247,6 +250,7 @@ void spa_teacher(vector<iiiv> G){
 
       // get first school preference of the teacher we're trying to match
       fs = G[ft].second[0];
+
       // assign this teacher temporary on a school
       last_match = make_pair(ft, fs);
       final_match.push_back(last_match);
@@ -270,15 +274,14 @@ void spa_teacher(vector<iiiv> G){
               // put this teacher back on the free list of teachers
               Tf.push_back(wt);
               // remove this teacher from the preference of that school
-              G[fs].second.erase(
-                            remove(G[fs].second.begin(),
+              G[fs].second.erase(remove(G[fs].second.begin(),
                                 G[fs].second.end(), wt),
                                 G[fs].second.end());
               // increase one vancacy of that school
               Vs[fs]++;
           } else {
-              // if on the final match there is no teacher of the preference
-              // of that school, delete the last one
+              // if on the final match there is no teacher of the
+              // preference of that school, delete the last one
               final_match.erase(remove(final_match.begin(),
                                   final_match.end(), last_match),
                                   final_match.end());
@@ -294,29 +297,26 @@ void spa_teacher(vector<iiiv> G){
           // get worst teacher
           wt = worstTeacher(final_match, fs, G[fs].second);
           if(wt > -1){
-              index_wt = *(find(G[fs].second.begin(),
-                            G[fs].second.end(), wt)) + 1;
-              wt_successors = wtSuccessorsList(fs, index_wt);
-
+              wt_successors = wtSuccessorsList(fs, wt);
               if(!wt_successors.empty()){
-                  for(int i = 0; i < wt_successors.size();i++){
+                  for(auto elem : wt_successors){
                       // remove teachers sucessors after the index of the
                       // worst teacher on the school preference list
                       if(find(G[fs].second.begin(),
                           G[fs].second.end(),
-                          wt_successors[i]) != G[fs].second.end())
+                          elem) != G[fs].second.end())
                           G[fs].second.erase(
-                            remove(G[fs].second.begin(), G[fs].second.end(), wt_successors[i]),
+                            remove(G[fs].second.begin(), G[fs].second.end(), elem),
                             G[fs].second.end());
 
-                      // also, remove this school preferenre on the teachers
-                      // removed preference list
-                      if(find(G[wt_successors[i]].second.begin(),
-                          G[wt_successors[i]].second.end(),
-                          fs) != G[wt_successors[i]].second.end())
-                          G[wt_successors[i]].second.erase(
-                            remove(G[wt_successors[i]].second.begin(), G[wt_successors[i]].second.end(), fs),
-                            G[wt_successors[i]].second.end());
+                      // also, remove this school preferenre on the
+                      // teachers removed preference list
+                      if(find(G[elem].second.begin(),
+                          G[elem].second.end(), fs) !=
+                          G[elem].second.end())
+                          G[elem].second.erase(
+                            remove(G[elem].second.begin(), G[elem].second.end(), fs),
+                            G[elem].second.end());
                   }
               }
           }
@@ -330,16 +330,11 @@ void spa_teacher(vector<iiiv> G){
   }
 
   printTeachersPerSchool(final_match);
-
-  // temporary print
-  // for(auto elem : final_match)
-  //     cout << elem.first << "->" << elem.second << endl;
-
 }
 
 
 /**
- * Incert a vertex with entyty, code, habilities ans position on the GRAPH.
+ * Insert a vertex with entyty, code, habilities ans position on the GRAPH.
  *
  * @param entity int value that determine if the vertex is a professor or school
  *
