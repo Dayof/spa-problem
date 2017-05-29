@@ -194,24 +194,13 @@ int worstTeacher(map<int, int> final_match, int school, vector<int> school_pref_
     }
 }
 
-int findWTIndex(int fs, int wt){
-    for(int i; i < GRAPH[fs].second.size();i++){
-        if(GRAPH[fs].second[i]==wt){
-            return i;
-        }
-    }
-    cout << "ERRO";
-    return -1;
-}
-
 vector<int> wtSuccessorsList(int fs, int index_wt){
     vector<int> v;
-    for(int j = GRAPH[fs].second[index_wt]; j < GRAPH[fs].second.size();j++){
-        v.push_back(GRAPH[fs].second[j]);
-    }
+
+    for(int i=0; i < GRAPH[fs].second.size(); ++i)
+      if(i >= index_wt) v.push_back(GRAPH[fs].second[i]);
 
     return v;
-
 }
 
 void spa_teacher(vector<iiiv> G){
@@ -258,7 +247,7 @@ void spa_teacher(vector<iiiv> G){
       // check if school vacancy is over subscribed
       if(Vs[actual_place_fs] < 0){
           // get worst teacher
-          wt = worstTeacher(final_match, fs, G[fs].second);
+          wt = worstTeacher(final_match, actual_place_fs, G[fs].second);
           if(wt > -1){
               // delete the worst teacher temporary assigned
               final_match.remove(wt);
@@ -280,59 +269,45 @@ void spa_teacher(vector<iiiv> G){
       }
 
       // check if school vacancy is full
-      if(vs[fs] == 0){
+      if(Vs[actual_place_fs] == 0){
           // get worst teacher
-          wt = worstTeacher(final_match, fs, G[fs].second);
+          wt = worstTeacher(final_match, actual_place_fs, G[fs].second);
           if(wt > -1){
-              index_wt = findWTIndex(fs, wt) + 1;
-              wt_successors = wtSuccessorsList(fs, index_wt);
+              index_wt = find(G[actual_place_fs].second.begin(),
+                            G[actual_place_fs].second.end(), wt) + 1;
+              wt_successors = wtSuccessorsList(actual_place_fs, *index_wt);
 
               if(!wt_successors.empty()){
                   for(int i = 0; i < wt_successors.size();i++){
-
                       // remove teachers sucessors after the index of the
                       // worst teacher on the school preference list
-                      for(int j; j < G[fs].second.size();j++){
-                          if(i==G[fs].second[j]){
-                              if(j == 0){
-                                  G[fs].second.erase(G[fs].second.begin());
-                              } else {
-                                  G[fs].second.erase(G[fs].second.begin() + j - 1);
-                              }
-                          }
-                      }
+                      if(find(G[actual_place_fs].second.begin(),
+                          G[actual_place_fs].second.end(),
+                          wt_successors[i]) != G[actual_place_fs].second.end())
+                          G[actual_place_fs].second.remove(wt_successors[i])
 
                       // also, remove this school preferenre on the teachers
                       // removed preference list
-                      for(int j; j< G[i].second.size();j++){
-                          if(fs == G[i].second[j]){
-                              if(j == 0){
-                                  G[i].second.erase(G[fs].second.begin());
-                              } else {
-                                  G[i].second.erase(G[fs].second.begin() + j - 1);
-                              }
-                          }
-                      }
+                      if(find(G[wt_successors[i]].second.begin(),
+                          G[wt_successors[i]].second.end(),
+                          actual_place_fs) != G[wt_successors[i]].second.end())
+                          G[wt_successors[i]].second.remove(actual_place_fs)
+
                   }
               }
           }
       }
 
       // get next free teacher on ft
-      if(!tf.empty()){
-          ft = tf[0];
-          tf.erase(tf.begin());
-          edge = G[ft].second;
+      if(!Tf.empty()){
+          ft = Tf[0];
+          Tf.remove(ft);
       }
-
   }
 
   // TEMPORARY PRINT
   for(auto elem : final_match)
-  {
      cout << elem.first << "->" << elem.second << endl;
-  }
-
 
 }
 
