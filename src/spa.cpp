@@ -11,9 +11,17 @@
 
 #include "spa.inl"
 
+
+/**
+ * Clear the terminal screen
+ *
+ * @return void
+ */
 void clear(){
   cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }
+
+
 /**
  * Information message to guide the user to press any key to continue using the
  *  system.
@@ -27,7 +35,11 @@ void pressToContinue(){
 }
 
 
-
+/**
+ * Display the hole stable matching of the teacher preferences.
+ *
+ * @return void
+ */
 void displayPrefTeach(){
 
     vector<pair<int, int>> final_match;
@@ -188,8 +200,17 @@ void processUIChoice(){
 }
 
 
-// worst teacher means that is the last teacher temporary assignment on the
-// preference list of the school
+/**
+ * Find the worse teacher of a matched pair teachers-school
+ *
+ * @param final_match the final match vector
+ *
+ * @param school the index of the school
+ *
+ * @param school_pref_list the list of teachers preferences from a school
+ *
+ * @return wt  index of the worst teacher
+ */
 int worstTeacher(vector<ii> final_match, int school, vector<int> school_pref_list){
     int ind, big_index = -1;
     vector<int> index_to_look;
@@ -209,6 +230,17 @@ int worstTeacher(vector<ii> final_match, int school, vector<int> school_pref_lis
     return (big_index > -1) ? school_pref_list[big_index] : -1;
 }
 
+
+/**
+ * Find the worsts teachers of a giving school, knowing a certaing worse teacher
+ *
+ * @param fs an integer value representing the index of the free school
+ *
+ * @param wt an integer value the index of the worse teacher
+ *
+ * @return v  vector of integer tepresenting the index of teachers worser than the
+ * worst teacher.
+ */
 vector<int> wtSuccessorsList(int fs, int wt){
     vector<int> v;
     bool result = false;
@@ -221,6 +253,15 @@ vector<int> wtSuccessorsList(int fs, int wt){
     return v;
 }
 
+
+/**
+ * Find a stable match between the professors and the schools, note that this is based
+ * on the professors preferences rather than the school's
+ *
+ * @param G a copy of the GRAPH
+ *
+ * @return final_match  vector of pair <integer, integer> representing the final match
+ */
 vector<ii> spa_teacher(vector<iiiv> G){
 
     int ft, fs, wt;
@@ -360,6 +401,14 @@ void insertVertexOnGraph(int entity, int cod, int hab, int posix)
   GRAPH[posix] = (node_struc);
 }
 
+
+/**
+ * Find 3 vector, the first is all the teachers with one habilitation
+ * the second is all the teachers with two habilitations
+ * the third is all a the teachers with three habilitations.
+ *
+ * @return all_t_adj a vector of vectors of integers
+ */
 vector<vector<int>> findSchoolsPerHab()
 {
   vector<vector<int>> all_t_adj(3);
@@ -378,7 +427,16 @@ vector<vector<int>> findSchoolsPerHab()
 }
 
 
-
+/**
+ * Since both teachers and schools will be placed on the same GRAPH,
+ * there is a need to recalculate the index of the adjacents vertexes.
+ *
+ * @param raw_adj  a vector of integers without the calculation
+ *
+ * @param entity  integer representing if its a teacher or school
+ *
+ * @return fiinal_adj a new vector of integers, representing the ideal index
+ */
 vector<int> calcAdj(vector<int> raw_adj, int entity)
 {
   vector<int> final_adj(raw_adj.size());
