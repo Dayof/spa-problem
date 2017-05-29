@@ -110,7 +110,15 @@ cp_graph = copy.deepcopy(graph)
 result = spa_teacher(99, 150)
 schools = set([j[1] for j in result])
 teachers = set([j[0] for j in result])
+schools = sorted(schools)
 count1, count2, count3, count4, count5 = 0, 0, 0, 0, 0
+tps = {}
+print('--- Set of teachers assigned ---\n', teachers)
+print('--- Set of schools assigned ---\n', schools)
+print('--- Professors per school ---')
+for i in schools:
+    tps[i] = [j[0] for j in result if j[1] == i]
+print(tps)
 for i in result:
     # print(i[1], cp_graph[i[0]][1][0])
     if i[1] == cp_graph[i[0]][1][0]:
@@ -123,4 +131,4 @@ for i in result:
         count4 += 1
     elif i[1] == cp_graph[i[0]][1][1]:
         count5 += 1
-print(result, '\nperfect match for %s teachers' % (count1), '\nc2: %s | c3: %s | c4: %s | c5: %s ' % (count2, count3, count4, count5), '\nteachers assigned: ', len(teachers), '\nschools assigned: ', len(schools))
+print('---- Result ----\n', result, '\nperfect match for %s teachers' % (count1), '\nc2: %s | c3: %s | c4: %s | c5: %s ' % (count2, count3, count4, count5), '\nteachers assigned: ', len(teachers), '\nschools assigned: ', len(schools))
