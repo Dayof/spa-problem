@@ -45,6 +45,8 @@ void insertVertexOnGraph(int, int, int, int);
 /* -- Global variables definitions -- */
 
 #define GRAPHSIZE 150
+#define TEACHERSIZE 100
+#define SCHOOLSIZE 50
 #define T 1
 #define S 0
 

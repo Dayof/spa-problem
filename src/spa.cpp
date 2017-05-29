@@ -163,31 +163,6 @@ void processUIChoice(){
 
 }
 
-
-vector<int> initializeTF(){
-    vector<int> v;
-
-    for(int i = 0; i < GRAPHSIZE;i++){
-        if(GRAPH[i].first.second == 1){
-            v.push_back(GRAPH[i].first.first.first);
-        }
-    }
-
-    return v;
-}
-
-vector<int> initializeSF(){
-    vector<int> v;
-
-    for(int i = 0; i < GRAPHSIZE;i++){
-        if(GRAPH[i].first.second == 0){
-            v.push_back(GRAPH[i].first.first.first);
-        }
-    }
-
-    return v;
-}
-
 int worstTeacher(map<int, int> final_match, int school, vector<int> school_pref_list){
     int big_index, ind;
     vector<int> index_to_look;
@@ -243,30 +218,22 @@ void spa_teacher(vector<iiiv> G){
 
     int ft, fs, wt, index_wt;
     // Tf: teachers free list
-    // Sf: schools free list
     // Vs: list of vacancies of each school
-    vector<int> Tf, Sf, Vs, edge, wt_successors;
-    // list of tuples of the final maximum bipartide matching
-    map<int, int> final_match;
-    bool run;
+    vector<int> Tf, Vs, edge, wt_successors;
+    // list of tuples of the stable marriage
+    vector<map<int, int>> final_match;
+    bool run = true;
 
-    Tf = initializeTF();
-    Sf = initializeSF();
-
-    for(int i = 0 ; i < sf.size() ;i++){
-        vs.push_back(2);
-    }
+    for(int i = 0 ; i < TEACHERSIZE ;i++)
+        Tf.push_back(i);
+        if(i < 50) Vs.push_back(2);
 
     // first free teacher to test
-    ft = tf[0];
-    tf.erase(tf.begin());
-    run = true;
+    ft = Tf[0];
+    Tf.remove(tf);
 
-    edge = G[ft].second;
-
-    // while there is a free teacher on Tf and this teacher still have a
-    // school
-    while(run && !edge.empty()){
+    // while there is a free teacher
+    while(run){
         // if(!tf.empty() && !G[ft].second.empty()){
         //     ft = tf[0];
         //     tf.erase(tf.begin());
