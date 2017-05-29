@@ -1,3 +1,5 @@
+import copy
+
 # worst teacher means the last temporary assignment on the prefered
 # list of the school
 def worstTeacher(final_match, school, school_pref_list):
@@ -5,17 +7,21 @@ def worstTeacher(final_match, school, school_pref_list):
     index_to_look = [j[0] for j in final_match if j[1] == school]
 
     for i in index_to_look:
-        ind = school_pref_list.index(i)
-        if ind > big_index:
-            big_index = ind
+        if i in school_pref_list:
+            ind = school_pref_list.index(i)
+            if ind > big_index:
+                big_index = ind
 
-    return school_pref_list[big_index]
+    return school_pref_list[big_index] if big_index > -1 else -1
 
-def spa_teacher(graph):
+def spa_teacher(t, s):
     # Tf: teachers free list
     # Sf: schools free list
     # Vs: list of vacancies of each school
-    Tf, Sf, Vs = list(range(6)), list(range(5, 9)) , {6:2, 7:2, 8:2}
+    Tf, Sf, Vs = list(range(t)), list(range(t, s)), {}
+
+    for i in range(t, s):
+        Vs[i] = 2
 
     # list of tuples of the final maximum bipartide matching
     final_match = []
@@ -23,15 +29,19 @@ def spa_teacher(graph):
     # first free teacher to test
     ft = Tf[0]
     Tf.remove(ft)
+    run = True
 
     # while there is a free teacher on Tf and this teacher still have a
     # school to go
-    while Tf and graph[ft][1]:
+    while run and graph[ft][1]:
+        run = True if Tf else False
+
         # get first school of Tf
         fs = graph[ft][1][0]
 
         # assign this teacher temporary on a school
-        final_match.append((ft, fs))
+        last_match = (ft, fs)
+        final_match.append(last_match)
         # delete this school preference on the teacher preference list
         graph[ft][1].remove(fs)
         # decrease one vacancy of that school
@@ -41,6 +51,7 @@ def spa_teacher(graph):
         if Vs[fs] < 0:
             # get worst teacher
             wt = worstTeacher(final_match, fs, graph[fs][1])
+            # print('under ', wt, graph[fs][1], fs, final_match)
             if wt > -1:
                 # delete the worst teacher temporary assigned
                 final_match.remove((wt, fs))
@@ -50,27 +61,37 @@ def spa_teacher(graph):
                 graph[fs][1].remove(wt)
                 # increase one vancacy of that school
                 Vs[fs] += 1
+            else:
+                # if on the final match there is no teacher of the preference of
+                # that school, delete the last one
+                final_match.remove(last_match)
+                # increase one vancacy of that school
+                Vs[fs] += 1
+
 
         # check if school vacancy is full
         if Vs[fs] == 0:
             # get worst teacher
             wt = worstTeacher(final_match, fs, graph[fs][1])
-            # print(wt)
             if wt > -1:
                 index_wt = graph[fs][1].index(wt) + 1
                 wt_sucessors = graph[fs][1][index_wt:]
+                # print('full ', wt, wt_sucessors)
                 if wt_sucessors:
                     for i in wt_sucessors:
                         # remove teachers sucessors after the index of the worst
                         # teacher on the school preference list
-                        graph[fs][1].remove(i)
+                        if i in graph[fs][1]:
+                            graph[fs][1].remove(i)
                         # also, remove this school preferenre on the teachers
                         # removed preference list
-                        graph[i][1].remove(fs)
+                        if fs in graph[i][1]:
+                            graph[i][1].remove(fs)
 
         # get next free teacher on ft
-        ft = Tf[0]
-        Tf.remove(ft)
+        if Tf:
+            ft = Tf[0]
+            Tf.remove(ft)
 
     return final_match
 
@@ -80,4 +101,26 @@ for i in range(int(input())):
     ent, cod, adj = line[0], line[1], list(map(int, line[2].split()))
     graph[i] = (ent, adj)
 
-print(spa_teacher(graph))
+# stub2: 99, 150
+# stub: 6, 9
+# stub3 and stub6: 5, 10
+# stub4: 4, 8
+# stub5: 3, 6
+cp_graph = copy.deepcopy(graph)
+result = spa_teacher(99, 150)
+schools = set([j[1] for j in result])
+teachers = set([j[0] for j in result])
+count1, count2, count3, count4, count5 = 0, 0, 0, 0, 0
+for i in result:
+    # print(i[1], cp_graph[i[0]][1][0])
+    if i[1] == cp_graph[i[0]][1][0]:
+        count1 += 1
+    elif i[1] == cp_graph[i[0]][1][1]:
+        count2 += 1
+    elif i[1] == cp_graph[i[0]][1][2]:
+        count3 += 1
+    elif i[1] == cp_graph[i[0]][1][3]:
+        count4 += 1
+    elif i[1] == cp_graph[i[0]][1][1]:
+        count5 += 1
+print(result, '\nperfect match for %s teachers' % (count1), '\nc2: %s | c3: %s | c4: %s | c5: %s ' % (count2, count3, count4, count5), '\nteachers assigned: ', len(teachers), '\nschools assigned: ', len(schools))
