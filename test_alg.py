@@ -65,6 +65,8 @@ def spa_teacher(t, s):
                 # if on the final match there is no teacher of the preference of
                 # that school, delete the last one
                 final_match.remove(last_match)
+                # put this last back on the free list of teachers
+                Tf.append(last_match[0])
                 # increase one vancacy of that school
                 Vs[fs] += 1
 
@@ -93,6 +95,7 @@ def spa_teacher(t, s):
             ft = Tf[0]
             Tf.remove(ft)
 
+    # print(graph[ft][1], ft, Tf)
     return final_match
 
 graph = {}
@@ -131,4 +134,18 @@ for i in result:
         count4 += 1
     elif i[1] == cp_graph[i[0]][1][1]:
         count5 += 1
+print('--- Schools with one teacher ---')
+schools_one = [key for key, value in tps.items() if len(value) == 1]
+print(schools_one)
+print('--- Free teachers ---')
+free_t = [i for i in range(100) if i not in teachers]
+print(free_t)
+print('--- Exist free schools which any free teacher want to go? ---')
+for i in free_t:
+    for j in schools_one:
+        if j in cp_graph[i][1]:
+            result.append((i, j))
+            print('Yes, school %s can employ teacher %s' % (j, i))
+schools = set([j[1] for j in result])
+teachers = set([j[0] for j in result])
 print('---- Result ----\n', result, '\nperfect match for %s teachers' % (count1), '\nc2: %s | c3: %s | c4: %s | c5: %s ' % (count2, count3, count4, count5), '\nteachers assigned: ', len(teachers), '\nschools assigned: ', len(schools))
