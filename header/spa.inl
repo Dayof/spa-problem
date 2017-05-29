@@ -25,12 +25,14 @@
 #include <utility>
 #include <algorithm>
 #include <set>
+#include <map>
 
 using namespace std;
 
 /* ----------- Definition of all functions of the program ----------- */
 
 /* -- Functions to show data on command terminal -- */
+
 
 /* -- Functions to create and populate the base graph -- */
 
@@ -39,6 +41,8 @@ void insertAdjOnVertex(vector<int>, int);
 vector<int> calcAdj(vector<int>, int);
 vector<vector<int>> findSchoolsPerHab();
 void insertVertexOnGraph(int, int, int, int);
+
+void spa_teacher();
 
 /* -- Global variables definitions -- */
 

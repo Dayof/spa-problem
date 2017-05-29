@@ -25,16 +25,11 @@ void pressToContinue(){
 
 
 void displayPrefTeach(){
-
-
-    pressToContinue();
-}
-
-void displayPrefSchool(){
-
+    spa_teacher();
 
     pressToContinue();
 }
+
 
 /**
  * Print the hole Graph.
@@ -69,8 +64,7 @@ void displayHelpUI(){
     cout << "\t- O trabalho implementa um grafo bidirecionado de          -" << endl;
     cout << "\t- professores e faculdades. E procura o emparelhamento     -" << endl;
     cout << "\t- perfeito para o grafo. A opcão 1 mostra o                -" << endl;
-    cout << "\t- emparelhamento com base nas escolas, a opcao 2 mostra o  -" << endl;
-    cout << "\t- emparelhamento com base nos professores, e a opcao 3     -" << endl;
+    cout << "\t- emparelhamento com base nas escolas, a opcao 2           -" << endl;
     cout << "\t- mostra o grafo completo.                                 -" << endl;
     cout << "\t------------------------------------------------------------" << endl;
 
@@ -89,10 +83,9 @@ void displayUI(){
     cout << "\t--------------Teacher School Allocation Problem-------------" << endl;
     cout << "\t-                                                          -" << endl;
     cout << "\t- 1. Alocacao com preferencia do professor                 -" << endl;
-    cout << "\t- 2. Alocacao com preferencia da escola                    -" << endl;
-    cout << "\t- 3. Grafo                                                 -" << endl;
-    cout << "\t- 4. Ajuda                                                 -" << endl;
-    cout << "\t- 5. Sair                                                  -" << endl;
+    cout << "\t- 2. Grafo                                                 -" << endl;
+    cout << "\t- 3. Ajuda                                                 -" << endl;
+    cout << "\t- 4. Sair                                                  -" << endl;
     cout << "\t-                                                          -" << endl;
     cout << "\t------------------------------------------------------------" << endl;
     cout << endl << "\t>>> ";
@@ -106,7 +99,7 @@ void displayUI(){
  */
 void displayWrongChoiceUI(){
     displayUI();
-    cout << "\tEscolha invalida, informe um valor de 1 a 5" << endl;
+    cout << "\tEscolha invalida, informe um valor de 1 a 4" << endl;
     cout << "\t>>> ";
 }
 
@@ -121,19 +114,16 @@ void processUIChoice(){
 
     cin >> choice;
 
-    while(choice != 5){
+    while(choice != 4){
         CLEARSCR();
 
         if(choice == 1){
             displayPrefTeach();
             displayUI();
         } else if(choice == 2){
-            displayPrefSchool();
-            displayUI();
-        } else if(choice == 3){
             printAllGraph();
             displayUI();
-        } else if(choice == 4){
+        } else if(choice == 3){
             displayHelpUI();
             displayUI();
         } else {
@@ -145,12 +135,171 @@ void processUIChoice(){
 
 }
 
-// void spaT()
-// {
-//   freeTeachers();
-//   freeUniversities();
-//   while()
-// }
+
+vector<int> initializeTF(){
+    vector<int> v;
+
+    for(int i = 0; i < GRAPHSIZE;i++){
+        if(GRAPH[i].first.second == 1){
+            v.push_back(GRAPH[i].first.first.first);
+        }
+    }
+
+    return v;
+}
+
+vector<int> initializeSF(){
+    vector<int> v;
+
+    for(int i = 0; i < GRAPHSIZE;i++){
+        if(GRAPH[i].first.second == 0){
+            v.push_back(GRAPH[i].first.first.first);
+        }
+    }
+
+    return v;
+}
+
+int worstTeacher(map<int, int> final_match, int school, vector<int> school_pref_list){
+    int big_index, ind;
+    vector<int> index_to_look;
+
+    big_index = -1;
+
+    for(auto elem : final_match)
+    {
+        if(final_match[elem.second] == school){
+            index_to_look.push_back(final_match[elem.first]);
+        }
+    }
+
+    for(int i = 0; i<index_to_look.size();i++){
+        for(int j = 0; j<school_pref_list.size();j++){
+            if(school_pref_list[j] == i){
+                ind = j;
+                if(ind > big_index){
+                    big_index = ind;
+                }
+            }
+        }
+    }
+
+    if(big_index > -1){
+        return school_pref_list[big_index];
+    } else {
+        return -1;
+    }
+}
+
+int findWTIndex(int fs, int wt){
+    for(int i; i < GRAPH[fs].second.size();i++){
+        if(GRAPH[fs].second[i]==wt){
+            return i;
+        }
+    }
+    cout << "ERRO";
+    return -1;
+}
+
+vector<int> wtSuccessorsList(int fs, int index_wt){
+    vector<int> v;
+    for(int j = GRAPH[fs].second[index_wt]; j < GRAPH[fs].second.size();j++){
+        v.push_back(GRAPH[fs].second[j]);
+    }
+
+    return v;
+
+}
+
+void spa_teacher(){
+
+    int ft, fs, wt, index_wt;
+    vector<int> tf, sf, vs, edge, wt_successors;
+    map<int, int> final_match;
+    bool run;
+
+    tf = initializeTF();
+    sf = initializeSF();
+
+    for(int i = 0 ; i < sf.size() ;i++){
+        vs.push_back(2);
+    }
+
+    ft = tf[0];
+    tf.erase(tf.begin());
+    run = true;
+
+    edge = GRAPH[ft].second;
+    while(run && !edge.empty()){
+        if(!tf.empty()){ run = true; }
+        else{ run = false; }
+
+
+        fs = edge[0];
+        final_match.emplace(ft, fs);
+        edge.erase(edge.begin());
+        vs[fs] -= 1;
+
+        if(vs[fs] < 0){
+            wt = worstTeacher(final_match, fs, GRAPH[fs].second);
+            if(wt > -1){
+                final_match.erase(wt);
+                tf.push_back(wt);
+
+                for(int j = 0; j < GRAPH[fs].second.size();j++){
+                    if(wt == GRAPH[fs].second[j]){
+                        GRAPH[fs].second.erase(GRAPH[fs].second.begin() + j- 1);
+                    }
+                }
+                vs[fs] += 1;
+            } else {
+                final_match.erase(ft);
+                vs[fs] += 1;
+            }
+        }
+
+        if(vs[fs] == 0){
+
+            wt = worstTeacher(final_match, fs, GRAPH[fs].second);
+            if(wt > -1){
+                index_wt = findWTIndex(fs, wt) + 1;
+                wt_successors = wtSuccessorsList(fs, index_wt);
+
+                if(!wt_successors.empty()){
+                    for(int i = 0; i < wt_successors.size();i++){
+
+                        for(int j; j < GRAPH[fs].second.size();j++){
+                            if(i==GRAPH[fs].second[j]){
+                                GRAPH[fs].second.erase(GRAPH[fs].second.begin() + j - 1);
+                            }
+                        }
+
+                        for(int j; j< GRAPH[i].second.size();j++){
+                            if(fs == GRAPH[i].second[j]){
+                                GRAPH[i].second.erase(GRAPH[fs].second.begin() + j - 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(!tf.empty()){
+            ft = tf[0];
+            tf.erase(tf.begin());
+            edge = GRAPH[ft].second;
+        }
+
+    }
+
+
+    for(auto elem : final_match)
+    {
+       cout << elem.first << "->" << elem.second << endl;
+    }
+
+
+}
 
 
 /**
