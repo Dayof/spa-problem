@@ -163,35 +163,25 @@ void processUIChoice(){
 
 }
 
-int worstTeacher(map<int, int> final_match, int school, vector<int> school_pref_list){
-    int big_index, ind;
+// worst teacher means that is the last teacher temporary assignment on the
+// preference list of the school
+int worstTeacher(vector<map<int, int>> final_match, int school, vector<int> school_pref_list){
+    int ind, big_index = -1;
     vector<int> index_to_look;
 
-    big_index = -1;
-
     for(auto elem : final_match)
-    {
-        if(final_match[elem.second] == school){
-            index_to_look.push_back(final_match[elem.first]);
-        }
-    }
+      if(elem.second == school){
+          index_to_look.push_back(elem.first);
 
-    for(int i = 0; i<index_to_look.size();i++){
-        for(int j = 0; j<school_pref_list.size();j++){
+    for(int i = 0; i < index_to_look.size(); i++)
+        for(int j = 0; j < school_pref_list.size(); j++)
             if(school_pref_list[j] == i){
                 ind = j;
-                if(ind > big_index){
+                if(ind > big_index)
                     big_index = ind;
-                }
             }
-        }
-    }
 
-    if(big_index > -1){
-        return school_pref_list[big_index];
-    } else {
-        return -1;
-    }
+    return (big_index > -1) ? school_pref_list[big_index] : -1;
 }
 
 vector<int> wtSuccessorsList(int fs, int index_wt){
