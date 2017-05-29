@@ -22,21 +22,34 @@ Este programa foi testado no sistema operacional ``macOS Sierra``, versão ``10.
 
 ## Detalhes sobre o projeto
 
-Este programa utiliza o arquivo ``x.txt`` para ... . É gerado um estrutura abstrata de ... para representar ... .
+Este programa utiliza o arquivo ``cod_hab.txt`` e ``cod-hab_schools.txt`` para criar um grafo de professores que gostariam de trabalhar em certas escolas, e o requerimento de cada escola em relação a professores que gostariam de contratar . É gerado um estrutura abstrata de grafo bidirecionado e bipartido para representar ambos os professores e as escolas. Ao total são 50 escolas que querem contratar até 2 professores e 100 professores, que tem preferencia de 5 escolas.
 
 ### Funcionalidades
 
 O programa realiza as seguintes funcionalidades a partir do menu principal:
 
-- Opção 1 : ...
+- Opção 1 : Mostra o emparelhamento estável entre os grupos de professores e escolas, com base na preferencia do professor.
 
-- Opção 2 : ...
+- Opção 2 : Mostra o Grafo Completo
 
-- Opção 3 : Permite sair do programa.
+- Opção 3 : Mostra uma tela de ajuda, relatando informações básicas sobre o programa.
+
+- Opção 4 : Permite sair do programa.
 
 ### Fluxo do programa
 
-- ...
+- Recebe dois arquivos de texto, ``cod-hab.txt`` que contém informações das escolas e suas preferencias, ``cod-hab_schools.txt`` contendo informações dos professores e suas preferencias de escolas;
+- Cria-se um vértice, contendo os seguintes elementos:
+    - Entidade (professor, ou escola),
+    - Código,
+    - Numero de habilitações,
+    - Preferencias;
+- Faz o devido tratamento dos códigos dos vértices para inserção no grafo;
+- Cria-se as listas de preferencias com os códigos atualizados;
+- Realiza o emparelhamento estável com preferencias dos professores;
+- Mostra a interface do usuário no terminal;
+- Espera receber alguma ação do usuário;
+- Executa a ação requisitada e volta para o menu inicial até que o usuário não queira mais utilizar o sistema (pressionando o número 4 do teclado na tela principal para sair do programa).
 
 ## Autoria
 
