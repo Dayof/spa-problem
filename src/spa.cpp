@@ -242,9 +242,9 @@ vector<int> wtSuccessorsList(int fs, int index_wt){
 void spa_teacher(vector<iiiv> G){
 
     int ft, fs, wt, index_wt;
-    // # Tf: teachers free list
-    // # Sf: schools free list
-    // # Vs: list of vacancies of each school
+    // Tf: teachers free list
+    // Sf: schools free list
+    // Vs: list of vacancies of each school
     vector<int> tf, sf, vs, edge, wt_successors;
     // list of tuples of the final maximum bipartide matching
     map<int, int> final_match;
@@ -265,7 +265,7 @@ void spa_teacher(vector<iiiv> G){
     edge = G[ft].second;
 
     // while there is a free teacher on Tf and this teacher still have a
-    // # school
+    // school
     while(run && !edge.empty()){
         // if(!tf.empty() && !G[ft].second.empty()){
         //     ft = tf[0];
@@ -311,8 +311,8 @@ void spa_teacher(vector<iiiv> G){
                 // increase one vancacy of that school
                 vs[fs] += 1;
             } else {
-                // if on the final match there is no teacher of the preference of
-                // that school, delete the last one
+                // if on the final match there is no teacher of the preference
+                // of that school, delete the last one
                 final_match.erase(ft);
                 // put this last back on the free list of teachers
                 tf.push_back(ft);
@@ -332,8 +332,8 @@ void spa_teacher(vector<iiiv> G){
                 if(!wt_successors.empty()){
                     for(int i = 0; i < wt_successors.size();i++){
 
-                        // remove teachers sucessors after the index of the worst
-                        // teacher on the school preference list
+                        // remove teachers sucessors after the index of the
+                        // worst teacher on the school preference list
                         for(int j; j < G[fs].second.size();j++){
                             if(i==G[fs].second[j]){
                                 if(j == 0){
