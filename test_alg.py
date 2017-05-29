@@ -38,8 +38,7 @@ def spa_teacher(t, s):
             ft = Tf[0]
             Tf.remove(ft)
             continue
-        elif not Tf:
-            break
+            
         run = True if Tf else False
 
         # get first school of Tf
