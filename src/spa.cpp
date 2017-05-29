@@ -13,7 +13,7 @@
 
 
 /**
- * Clear the terminal screen
+ * Clears the terminal screen
  *
  * @return void
  */
@@ -21,10 +21,9 @@ void clear(){
   cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }
 
-
 /**
  * Information message to guide the user to press any key to continue using the
- *  system.
+ *  system
  *
  * @return void
  */
@@ -34,9 +33,8 @@ void pressToContinue(){
     getchar();
 }
 
-
 /**
- * Display the hole stable matching of the teacher preferences.
+ * Displays the whole stable matching of the teacher preferences
  *
  * @return void
  */
@@ -69,9 +67,8 @@ void displayPrefTeach(){
     pressToContinue();
 }
 
-
 /**
- * Print the hole Graph.
+ * Prints the whole graph
  *
  * @return void
  */
@@ -115,29 +112,33 @@ void printAllGraph()
 
 
 /**
- * Displays the help screen.
+ * Displays the help screen
  *
  * @return void
  */
 void displayHelpUI(){
-    cout << "\t--------------Teacher School Allocation Problem-------------" << endl;
-    cout << "\t- Terceiro projeto da materia de Teoria e Aplicacao        -" << endl;
-    cout << "\t- de Grafos (TAG) do semestre de 2017/1.                   -" << endl;
-    cout << "\t- Feito por Dayanne Fernandes e Renato Nobre               -" << endl;
-    cout << "\t-                                                          -" << endl;
-    cout << "\t- O trabalho implementa um grafo bidirecionado de          -" << endl;
-    cout << "\t- professores e faculdades. E procura o emparelhamento     -" << endl;
-    cout << "\t- perfeito para o grafo. A opcão 1 mostra o                -" << endl;
-    cout << "\t- emparelhamento com base nas escolas, a opcao 2           -" << endl;
-    cout << "\t- mostra o grafo completo.                                 -" << endl;
-    cout << "\t------------------------------------------------------------" << endl;
+    cout << "\t-----------Teacher School Allocation Problem----------" << endl;
+    cout << "\t- Terceiro projeto da matéria de Teoria e Aplicação  -" << endl;
+    cout << "\t- de Grafos (TAG) do semestre de 2017/1.             -" << endl;
+    cout << "\t- Feito por Dayanne Fernandes e Renato Nobre.        -" << endl;
+    cout << "\t- Matrículas 13/0107191 e 15/0146698 respectivamente.-" << endl;
+    cout << "\t-                                                    -" << endl;
+    cout << "\t- O trabalho implementa um grafo bidirecionado e     -" << endl;
+    cout << "\t- bipartido para representar ambos os professores e  -" << endl;
+    cout << "\t- as escolas. Este sistema é ótimo no ponto de vista -" << endl;
+    cout << "\t- do professor, ou seja, nenhum professor é alocado  -" << endl;
+    cout << "\t- fora de uma escola que ele não tenha desejo de     -" << endl;
+    cout << "\t- trabalhar. A opcão 1 mostra o emparelhamento       -" << endl;
+    cout << "\t- estável entre os grupos de professores e escolas,  -" << endl;
+    cout << "\t- com base nas preferências dos professores. A opção -" << endl;
+    cout << "\t- 2 mostra o grafo completo.                         -" << endl;
+    cout << "\t------------------------------------------------------" << endl;
 
     pressToContinue();
 }
 
-
 /**
- * Displays the main user interface of the project.
+ * Displays the main user interface of the project
  *
  * @return void
  */
@@ -146,7 +147,7 @@ void displayUI(){
 
     cout << "\t--------------Teacher School Allocation Problem-------------" << endl;
     cout << "\t-                                                          -" << endl;
-    cout << "\t- 1. Alocacao com preferencia do professor                 -" << endl;
+    cout << "\t- 1. Alocação com preferência dos professores              -" << endl;
     cout << "\t- 2. Grafo                                                 -" << endl;
     cout << "\t- 3. Ajuda                                                 -" << endl;
     cout << "\t- 4. Sair                                                  -" << endl;
@@ -157,7 +158,7 @@ void displayUI(){
 
 /**
  * Displays a message when the user inputs a not valid choice for the
- *  processUIChoice.
+ *  processUIChoice
  *
  * @return void
  */
@@ -169,7 +170,7 @@ void displayWrongChoiceUI(){
 
 /**
  * Process what is the user's choice of the main user interface
- *  and call the respective method.
+ *  and call the respective method
  *
  * @return void
  */
@@ -196,12 +197,10 @@ void processUIChoice(){
 
         cin >> choice;
     }
-
 }
 
-
 /**
- * Find the worse teacher of a matched pair teachers-school
+ * Finds the worse teacher of a matched pair teachers-school
  *
  * @param final_match the final match vector
  *
@@ -209,7 +208,7 @@ void processUIChoice(){
  *
  * @param school_pref_list the list of teachers preferences from a school
  *
- * @return wt  index of the worst teacher
+ * @return wt the worst teacher
  */
 int worstTeacher(vector<ii> final_match, int school, vector<int> school_pref_list){
     int ind, big_index = -1;
@@ -232,14 +231,13 @@ int worstTeacher(vector<ii> final_match, int school, vector<int> school_pref_lis
 
 
 /**
- * Find the worsts teachers of a giving school, knowing a certaing worse teacher
+ * Finds the successors of the worse teacher of a giving school
  *
  * @param fs an integer value representing the index of the free school
  *
- * @param wt an integer value the index of the worse teacher
+ * @param wt an integer value of the worse teacher
  *
- * @return v  vector of integer tepresenting the index of teachers worser than the
- * worst teacher.
+ * @return v vector of integers representing the successors of the worse teacher
  */
 vector<int> wtSuccessorsList(int fs, int wt){
     vector<int> v;
@@ -255,12 +253,13 @@ vector<int> wtSuccessorsList(int fs, int wt){
 
 
 /**
- * Find a stable match between the professors and the schools, note that this is based
- * on the professors preferences rather than the school's
+ * Find a stable match between the teachers and the schools
+ *  Note that this algorithm is optimal on the point of view of the teachers
+ *  preferences rather than the schools.
  *
- * @param G a copy of the GRAPH
+ * @param G a copy of the main graph
  *
- * @return final_match  vector of pair <integer, integer> representing the final match
+ * @return final_match vector of pairs of integers representing the final match
  */
 vector<ii> spa_teacher(vector<iiiv> G){
 
@@ -381,13 +380,13 @@ vector<ii> spa_teacher(vector<iiiv> G){
 
 
 /**
- * Insert a vertex with entyty, code, habilities ans position on the GRAPH.
+ * Inserts a vertex with entity, code, abilities and position on the graph
  *
- * @param entity int value that determine if the vertex is a professor or school
+ * @param entity value that determine if the vertex is a professor or a school
  *
- * @param cod professor or school code
+ * @param cod professor's or school's code
  *
- * @param hab amount of habilities a professor have or a school requires
+ * @param hab amount of abilities that a professor have or a school requirements
  *
  * @param posix position index of the vertex to be inserted
  *
@@ -401,11 +400,11 @@ void insertVertexOnGraph(int entity, int cod, int hab, int posix)
   GRAPH[posix] = (node_struc);
 }
 
-
 /**
- * Find 3 vector, the first is all the teachers with one habilitation
- * the second is all the teachers with two habilitations
- * the third is all a the teachers with three habilitations.
+ * Finds 3 vectors
+ *  The first is all the teachers with one ability,
+ *  the second is all the teachers with two abilities,
+ *  the third is all the teachers with three abilities.
  *
  * @return all_t_adj a vector of vectors of integers
  */
@@ -426,14 +425,13 @@ vector<vector<int>> findSchoolsPerHab()
   return all_t_adj;
 }
 
-
 /**
- * Since both teachers and schools will be placed on the same GRAPH,
- * there is a need to recalculate the index of the adjacents vertexes.
+ * Since both teachers and schools will be placed on the same graph,
+ *  there is a need to recalculate the index of the adjacents vertexes.
  *
- * @param raw_adj  a vector of integers without the calculation
+ * @param raw_adj a vector of integers without the calculation
  *
- * @param entity  integer representing if its a teacher or school
+ * @param entity integer representing if it's a teacher or a school
  *
  * @return fiinal_adj a new vector of integers, representing the ideal index
  */
@@ -452,11 +450,11 @@ vector<int> calcAdj(vector<int> raw_adj, int entity)
 }
 
 /**
- * Insert Edges on the graph.
+ * Inserts edges on the graph
  *
- * @param adj  vector of adjecents to represent the edges
+ * @param adj vector of adjacents values to represent the edges
  *
- * @param v_origin index of the origin vertex
+ * @param v_origin index of the origin vertex to add this adjacent values
  *
  * @return void
  */
@@ -465,11 +463,11 @@ void insertAdjOnVertex(vector<int> adj, int v_origin)
   GRAPH[v_origin].second = adj;
 }
 
-
 /**
- * Convert string to int. Used to remove E and T from the text file.
+ * Converts string to int
+ *  Used to remove the characters 'E' and 'T' from the text file.
  *
- * @param word  the string to be converted
+ * @param word the string to be converted
  *
  * @return iword integer made from the string
  */
@@ -484,8 +482,9 @@ int convStringToInt(string word)
 }
 
 /**
- * Main function. Reads and loads basic data, then executes all main
- *  functionalities of the program.
+ * Main function.
+ *  Reads and loads basic data, then executes all main functionalities
+ *  of the program.
  *
  * @return int 0 represents good exit, -1 represents bad exit
  */
@@ -548,8 +547,6 @@ int main(){
   }
 
   fclose(pF);
-
-  // printAllGraph();
 
   displayUI();
   processUIChoice();
