@@ -11,6 +11,9 @@
 
 #include "spa.inl"
 
+void clear(){
+  cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+}
 /**
  * Information message to guide the user to press any key to continue using the
  *  system.
@@ -38,7 +41,7 @@ void displayPrefTeach(){
  */
 void printAllGraph()
 {
-    bool flag = 1, flag2 = 1;
+  bool flag = 1, flag2 = 1;
 
   for(int i=0; i < GRAPHSIZE; ++i)
   {
@@ -103,7 +106,7 @@ void displayHelpUI(){
  * @return void
  */
 void displayUI(){
-    CLEARSCR();
+    clear();
 
     cout << "\t--------------Teacher School Allocation Problem-------------" << endl;
     cout << "\t-                                                          -" << endl;
@@ -140,7 +143,7 @@ void processUIChoice(){
     cin >> choice;
 
     while(choice != 4){
-        CLEARSCR();
+        clear();
 
         if(choice == 1){
             displayPrefTeach();

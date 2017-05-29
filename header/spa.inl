@@ -48,12 +48,6 @@ void insertVertexOnGraph(int, int, int, int);
 #define T 1
 #define S 0
 
-#ifdef WINDOWS
-  #define CLEARSCR() system("cls")
-#else
-  #define CLEARSCR() system("clear")
-#endif
-
 #define ii pair<int, int>
 #define iii pair<ii, int>
 #define iiiv pair <iii, vector<int> >
