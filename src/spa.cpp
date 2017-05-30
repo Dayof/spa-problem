@@ -33,6 +33,16 @@ void pressToContinue(){
     getchar();
 }
 
+/**
+ * Finds the index on the rank of the teacher that was hired by a school
+ *  Also, counts how many teachers had their first preference attended, their
+ *  second, third and follow.
+ *
+ * @param final_match the final match vector
+ *
+ * @return pf a dictionary of integers that contains the numbers to plot
+ *            the statistic about the teachers preferences
+ */
 map<int, int> countPref(vector<ii> final_match)
 {
   map<int, int> pf;
