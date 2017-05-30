@@ -48,6 +48,7 @@ void insertAdjOnVertex(vector<int>, int);
 vector<int> calcAdj(vector<int>, int);
 vector<vector<int>> findSchoolsPerHab();
 void insertVertexOnGraph(int, int, int, int);
+map<int, int> countPref(vector<pair<int, int>>);
 
 /* -- Global variables definitions -- */
 

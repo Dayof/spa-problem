@@ -135,7 +135,7 @@ for i in result:
         count3 += 1
     elif i[1] == cp_graph[i[0]][1][3]:
         count4 += 1
-    elif i[1] == cp_graph[i[0]][1][1]:
+    elif i[1] == cp_graph[i[0]][1][4]:
         count5 += 1
 print('--- Schools with one teacher ---')
 schools_one = [key for key, value in tps.items() if len(value) == 1]

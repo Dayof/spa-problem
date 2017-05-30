@@ -33,6 +33,25 @@ void pressToContinue(){
     getchar();
 }
 
+map<int, int> countPref(vector<ii> final_match)
+{
+  map<int, int> pf;
+  int c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0;
+
+  for(auto elem : final_match)
+  {
+    if(elem.second==GRAPH[elem.first].second[0]) pf[elem.first] = 1, c1++;
+    else if(elem.second==GRAPH[elem.first].second[1]) pf[elem.first] = 2, c2++;
+    else if(elem.second==GRAPH[elem.first].second[2]) pf[elem.first] = 3, c3++;
+    else if(elem.second==GRAPH[elem.first].second[3]) pf[elem.first] = 4, c4++;
+    else if(elem.second==GRAPH[elem.first].second[4]) pf[elem.first] = 5, c5++;
+  }
+
+  pf[151] = c1, pf[152] = c2, pf[153] = c3, pf[154] = c4, pf[155] = c5;
+
+  return pf;
+}
+
 /**
  * Displays the whole stable matching of the teacher preferences
  *
@@ -40,9 +59,11 @@ void pressToContinue(){
  */
 void displayPrefTeach(){
 
-    vector<pair<int, int>> final_match;
+    vector<ii> final_match;
+    map<int, int> pref_T;
 
     final_match = spa_teacher(GRAPH);
+    pref_T = countPref(final_match);
 
     map<int, vector<int>> items;
 
@@ -56,13 +77,30 @@ void displayPrefTeach(){
     cout << "ESCOLAS E SEUS RESPECTIVOS PROFESSORS" << endl << endl;
 
     for(auto elem : items) {
-        cout << "E" << elem.first - 99 << " contratou ";
+        cout << "E" << elem.first - 99 << " procura professores com " <<
+        GRAPH[elem.first].first.first.second << " habilidades" <<
+        " e contratou :" << endl;
         bool first = true;
         for(auto i : elem.second){
-            cout << "P" << i << "  ";
+            cout << "P" << i << " com " << GRAPH[i].first.first.second <<
+            " habilidades. Esta escola está na sua " << pref_T[i] << " preferência." << endl;
         }
         cout << endl;
     }
+
+    cout << pref_T[151] << " professores foram contratados em escolas de sua" <<
+    " primeira preferência" << endl;
+    cout << pref_T[152] << " professores foram contratados em escolas de sua" <<
+    " segunda preferência" << endl;
+    cout << pref_T[153] << " professores foram contratados em escolas de sua" <<
+    " terceira preferência" << endl;
+    cout << pref_T[154] << " professores foram contratados em escolas de sua" <<
+    " quarta preferência" << endl;
+    cout << pref_T[155] << " professores foram contratados em escolas de sua" <<
+    " quinta preferência" << endl << endl;
+    cout << "Ao todo, " << (pref_T[151] + pref_T[152] + pref_T[153] +
+      pref_T[154] + pref_T[155]) << " professores foram contratados por 50" <<
+    " escolas" << endl;
 
     pressToContinue();
 }
